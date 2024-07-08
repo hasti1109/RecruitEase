@@ -1,8 +1,8 @@
-import CandidateLogin from "./pages/CandidateLogin"
+import Login from "./pages/Login"
 
 function App() {
   return <>
-   <CandidateLogin/>
+   <Login/>
   </>
 }
 

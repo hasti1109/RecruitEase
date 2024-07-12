@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IoEye, IoEyeOff, IoKey, IoMail } from "react-icons/io5"
 import  login_logo  from "../assets/login_logo.png";
+import { Link } from "react-router-dom";
 
 const Login = () => {
 
@@ -27,11 +28,11 @@ const Login = () => {
               <div className="border-2 w-20 border-primary inline-block mb-2 mt-3"></div>
 
               {/* email and password inputs */}
-              <div className="flex flex-col items-center py-2 mt-5">
+              <div className="flex flex-col items-center py-2 mt-5 ">
                 <form onSubmit={handleSubmit}>
 
                   {/* email */}
-                  <div className="bg-gray-200 w-80 py-4 rounded-lg flex gap-x-2">
+                  <div className="bg-gray-200 w-80 lg:py-4 sm:py-2 rounded-lg flex gap-x-2">
                     <IoMail className="text-lg text-gray-400 ml-2 mr-1"/>
                     <input 
                       type="text" 
@@ -40,7 +41,7 @@ const Login = () => {
                   </div>
                   
                   {/* password */}
-                  <div className="bg-gray-200 w-80 py-4 rounded-lg flex gap-x-2 mt-3">
+                  <div className="bg-gray-200 w-80 lg:py-4 sm:py-2 rounded-lg flex gap-x-2 mt-3">
                     <IoKey className="text-gray-400 ml-2 mr-1 text-lg"/>
                     <input 
                       type={showPassword? "text" : "password"} 
@@ -52,7 +53,7 @@ const Login = () => {
                   </div>
 
                   {/* forgot password */}
-                  <div className="flex w-full justify-end text-sm text-gray-400 mt-3">
+                  <div className="flex w-full justify-end lg:text-sm sm:text-xs md:text-xs text-gray-400 mt-3">
                     <a href="#" className="cursor-pointer">Forgot password?</a>
                   </div>
 
@@ -60,10 +61,10 @@ const Login = () => {
                     <input 
                       type="submit" 
                       value="Sign In" 
-                      className="border-2 cursor-pointer border-primary rounded-full bg-primary text-white lg:px-12 sm:px-5 lg:py-2 sm:text-sm lg:text-lg inline-block font-semibold hover:bg-white hover:text-primary hover:border-primary w-full" />
+                      className="border-2 cursor-pointer border-primary rounded-full bg-primary text-white lg:px-12 sm:px-5 lg:py-2 sm:py-1 sm:text-sm lg:text-lg inline-block font-semibold hover:bg-white hover:text-primary hover:border-primary w-full" />
                   </div>
                   <div className="flex w-full justify-center text-sm text-gray-600 mt-3">
-                    Don't have an account?<span className="ml-2 text-blue-500 text font-semibold cursor-pointer">Sign Up</span>
+                    Don't have an account?<Link to="/signup" className="ml-2 text-blue-500 text font-semibold cursor-pointer">Sign Up</Link>
                   </div>
                 </form>
               </div>
@@ -72,13 +73,12 @@ const Login = () => {
             </div>
           </div>
 
-          {/* sign up section  */}
+          {/* description section  */}
 
           <div className="w-2/5 bg-primary text-white rounded-2xl rounded-bl-[60px] rounded-tl-[60px] py-20 px-12">
-            <h2 className="lg:text-3xl sm:text-lg font-bold mb-2">Welcome back!</h2>
+            <h2 className="lg:text-2xl sm:text-lg font-bold mb-2">Welcome back!</h2>
             <div className="border-2 w-10 border-white inline-block mb-2 "></div>
-            <p className="mb- lg:text-[16px] sm:text-sm">We are here to simplify your job application journey.</p>
-            {/* <button className="border-2 border-white rounded-full lg:px-12 sm:px-5 lg:py-2 sm:text-sm lg:text-lg inline-block font-semibold hover:bg-white hover:text-primary">Sign Up</button> */}
+            <p className="mb-0 lg:text-[15px] sm:text-sm">We are here to simplify your job application journey.</p>
             <img src={login_logo} className="mb-0 bg-none"/>
           </div>
         </div>

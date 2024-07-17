@@ -2,15 +2,30 @@ import { useState } from "react";
 import { IoEye, IoEyeOff, IoKey, IoMail } from "react-icons/io5"
 import  login_logo  from "../assets/login_logo.png";
 import { Link } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+//import { Toaster } from "react-hot-toast";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+type FormFields = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 
 const SignUp = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleSubmit = async() => {
-    toast.success('profile created successfully')
+  const { 
+    register, 
+    handleSubmit, 
+    getValues,
+    formState: { errors, isSubmitting } 
+  } = useForm<FormFields>();
+
+  const onSubmit: SubmitHandler<FormFields> = async(data) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log(data);
   }
 
   return (
@@ -40,49 +55,80 @@ const SignUp = () => {
 
               {/* email and password inputs */}
               <div className="flex flex-col items-center py-2 mt-5">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(onSubmit)}>
 
                   {/* email */}
                   <div className="bg-gray-200 w-80 py-4 rounded-lg flex gap-x-2">
                     <IoMail className="text-lg text-gray-400 ml-2 mr-1"/>
                     <input 
+                      {...register("email",{
+                        required: "Email is required*",
+                        validate: (value) => {
+                            return value.includes('@') || "Invalid email address";
+                        }
+                      })}
                       type="text" 
                       className="border-none mr-2 flex-1 outline-none bg-gray-200 text-sm" 
                       placeholder="Email"/>
                   </div>
+                  {errors.email && <div className="mt-1 text-error text-sm text-left">{errors.email.message}</div>}
                   
                   {/* password */}
                   <div className="bg-gray-200 w-80 py-4 rounded-lg flex gap-x-2 mt-3">
                     <IoKey className="text-gray-400 ml-2 mr-1 text-lg"/>
                     <input 
+                      {...register("password",{
+                        required: "Password is required*",
+                        minLength: {
+                          value: 8,
+                          message: "Password must have atleast 8 characters"
+                        },
+                      })}
                       type={showPassword? "text" : "password"} 
                       className="text-sm border-none flex-1 outline-none bg-gray-200"
                       placeholder="Password"/>
                     <div onClick={() => setShowPassword(!showPassword)}>
-                      { showPassword ? <IoEye className="mr-3 text-gray-400 cursor-pointer"/>: <IoEyeOff className="text-gray-400 mr-3 cursor-pointer"/>}
+                      { showPassword 
+                      ? <IoEye className="mr-3 text-gray-400 cursor-pointer"/>
+                      :<IoEyeOff className="text-gray-400 mr-3 cursor-pointer"/>}
                     </div>
                   </div>
+                  {errors.password && <div className="mt-1 text-error text-sm text-left">{errors.password.message}</div>}
 
                   {/* confirm password */}
                   <div className="bg-gray-200 w-80 py-4 rounded-lg flex gap-x-2 mt-3">
                     <IoKey className="text-gray-400 ml-2 mr-1 text-lg"/>
                     <input 
+                      {...register("confirmPassword", {
+                        required: "Enter password again",
+                        validate: (value) => {
+                          const password = getValues("password")
+                          if(errors.password) {return true;}
+                          return value === password || "Passwords do not match";
+                        }
+                      })}
                       type={showConfirmPassword? "text" : "password"} 
                       className="text-sm border-none flex-1 outline-none bg-gray-200"
                       placeholder="Confirm Password"/>
                     <div onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-                      { showConfirmPassword ? <IoEye className="mr-3 text-gray-400 cursor-pointer"/>: <IoEyeOff className="text-gray-400 cursor-pointer mr-3"/>}
+                      { showConfirmPassword 
+                      ? <IoEye className="mr-3 text-gray-400 cursor-pointer"/>
+                      : <IoEyeOff className="text-gray-400 cursor-pointer mr-3"/>}
                     </div>
                   </div>
+                  {errors.confirmPassword && <div className="mt-1 text-error text-sm text-left">{errors.confirmPassword.message}</div>}
 
-                  <div className="mt-7 border-2 cursor-pointer border-primary rounded-full bg-primary text-white lg:px-12 sm:px-5 lg:py-2 sm:text-sm lg:text-lg inline-block font-semibold hover:bg-white hover:text-primary hover:border-primary w-full" onClick={handleSubmit}>
-                    {/* <Link to="/profile-creation" replace onClick={toast('profile craeted')}>Sign Up</Link> */}
-                    Sign up
+                  <div className="mt-7 border-2 cursor-pointer border-primary rounded-full bg-primary text-white lg:px-12 sm:px-5 lg:py-2 sm:text-sm lg:text-lg inline-block font-semibold hover:bg-white hover:text-primary hover:border-primary w-full">
+                    <input
+                      type="Submit"
+                      value={isSubmitting ? "Signing up.." : "Sign Up"}
+                    />
                   </div>
 
                   <div className="flex w-full justify-center text-sm text-gray-600 mt-3">
                     Already have an account?<Link to="/login" replace className="ml-2 text-blue-500 font-semibold cursor-pointer">Sign In</Link>
                   </div>
+
                 </form>
               </div>
 
@@ -90,7 +136,7 @@ const SignUp = () => {
             </div>
           </div>
         </div>
-        <div><Toaster position="bottom-center"/></div>
+        {/* <div><Toaster position="bottom-center"/></div> */}
      </main>
     </div>
   )

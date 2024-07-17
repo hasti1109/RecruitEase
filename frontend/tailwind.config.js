@@ -12,7 +12,7 @@ export default {
         secondary: "#5aaf76",
         "secondary-variant":"#018786",
         background:  "#FFFFFF",
-        error: "#B00020"
+        error: "#CC0000"
       },
       fontFamily: {
         primary: 'Poppins',

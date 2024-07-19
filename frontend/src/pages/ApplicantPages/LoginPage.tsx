@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IoEye, IoEyeOff, IoKey, IoMail } from "react-icons/io5"
-import  login_logo  from "../assets/login_logo.png";
+import  login_logo  from "../../assets/login_logo.png";
+import job_offer from "../../assets/job-offer.png"
 import { Link } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
@@ -18,6 +19,7 @@ const Login = () => {
     register, 
     handleSubmit, 
     setError,
+    getValues,
     formState: { errors, isSubmitting } 
   } = useForm<FormFields>({
     defaultValues:{
@@ -31,25 +33,36 @@ const Login = () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       console.log(data);
       //simutlation for getting an error from backend
-      throw new Error();
-    } catch (error) {
+      if(getValues("password")==="hasti1109") {
+        toast.success("signed in successfully!")
+      }
+      else throw new Error("Incorrect password");
+    } catch (e) {
       toast.error("Error signing in. Try again later.");
-      setError("email",{
-        message: "Invalid email Id."
-      })
+      if (e instanceof Error) {
+        setError("password", {
+          type: "manual",
+          message: e.message, // Accessing the message of the error
+        });
+      } else {
+        setError("password", {
+          type: "manual",
+          message: "An unknown error occurred",
+        });
+      }
     }
   }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-200">
       <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <div className="bg-white rounded-2xl shadow-xl flex lg:w-2/3 sm:w-full md:w-full max-w-4xl">
+        <div className="bg-white rounded-2xl shadow-lg flex lg:w-2/3 sm:w-full md:w-full max-w-4xl">
 
           {/* Sign in section */}
           <div className="sign-in w-3/5 p-4 sm:">
 
-            <div className="text-left lg:text-lg font-bold">
-              <span className="text-primary">Recruit</span>Ease
+            <div className="flex items-center text-left lg:text-lg font-bold">
+              <img src={job_offer} className="w-7 h-7 mr-1"/><span className="text-primary">Recruit</span>Ease
             </div>
 
             <div className="py-10 w-full">
@@ -126,6 +139,8 @@ const Login = () => {
             <img src={login_logo} className="mb-0 bg-none"/>
           </div>
         </div>
+
+        <div className="mt-10 font-semibold">Are you a recruiter? <span className="text-link cursor-pointer"><Link to='/recruiter-login'>Login as recruiter</Link></span></div>
 
         <div><Toaster position="bottom-center"/></div>
      </main>

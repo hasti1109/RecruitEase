@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { IoEye, IoEyeOff, IoKey, IoMail } from "react-icons/io5"
-import  login_logo  from "../assets/login_logo.png";
+import  login_logo  from "../../assets/login_logo.png";
+import job_offer from '../../assets/job-offer.png'
 import { Link } from "react-router-dom";
 //import { Toaster } from "react-hot-toast";
 import { SubmitHandler, useForm } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
 
 type FormFields = {
   email: string;
@@ -20,12 +22,24 @@ const SignUp = () => {
     register, 
     handleSubmit, 
     getValues,
+    setError,
     formState: { errors, isSubmitting } 
   } = useForm<FormFields>();
 
   const onSubmit: SubmitHandler<FormFields> = async(data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(data);
+    try {
+      //simulation for checking db data
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log(data);
+      //simutlation for getting an error from backend
+      if (false) throw new Error();
+      toast.success("Successfully created account!")
+    } catch (error) {
+      toast.error("Error creating account. Try again later.");
+      setError("email",{
+        message: "Invalid email Id."
+      })
+    }
   }
 
   return (
@@ -45,9 +59,9 @@ const SignUp = () => {
           {/* Sign up section */}
           <div className="sign-in w-3/5 p-5">
 
-            <div className="text-right text-lg font-bold">
-              <span className="text-primary">Recruit</span>Ease
-            </div>
+            <div className="flex justify-end items-end text-right text-lg font-bold">
+            <span className="text-primary">Recruit</span>Ease
+            <img src={job_offer} className="w-7 h-7 ml-1"/></div>
 
             <div className="py-10 w-full">
               <h2 className="text-primary font-semibold lg:text-2xl sm:text-lg">Create an account</h2>
@@ -100,7 +114,7 @@ const SignUp = () => {
                     <IoKey className="text-gray-400 ml-2 mr-1 text-lg"/>
                     <input 
                       {...register("confirmPassword", {
-                        required: "Enter password again",
+                        required: errors.password ? "" : "Enter password again",
                         validate: (value) => {
                           const password = getValues("password")
                           if(errors.password) {return true;}
@@ -132,11 +146,10 @@ const SignUp = () => {
                 </form>
               </div>
 
-
             </div>
           </div>
         </div>
-        {/* <div><Toaster position="bottom-center"/></div> */}
+        <div><Toaster position="bottom-center"/></div>
      </main>
     </div>
   )

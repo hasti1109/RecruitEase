@@ -1,8 +1,8 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import main_logo from "../../assets/job-offer.png";
 import { IoCloudUploadOutline, IoArrowForward } from "react-icons/io5";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import Logo from "../../components/Logo";
 
 type FormFields = {
   name: string;
@@ -60,12 +60,7 @@ const CandidateProfile = () =>{
     <div className="min-h-screen">
       <header className="fixed top-0 w-full z-10">
         <div className="flex justify-between items-center bg-primary h-16 px-3 text-white">
-          <div className="text-white font-bold text-left flex items-center lg:text-lg sm:text-sm lg:ml-14 sm:ml-8">
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-white flex justify-center items-center bg-white text-primary font-semibold mr-1">
-              <img src={main_logo} alt="Main Logo" />
-            </div>
-            Recruit<span className="text-black">Ease</span>
-          </div>
+          <Logo/>
           
           <div className="flex items-center md:mr-8">
             <h3 className="text-[12px] md:text-sm mr-2">hastigabani1109@gmail.com</h3>

@@ -3,6 +3,7 @@ import Login from "./pages/ApplicantPages/LoginPage"
 import SignUp from './pages/ApplicantPages/SignupPage';
 import CandidateProfile from './pages/ApplicantPages/CandidateProfile';
 import RecruiterLogin from './pages/RecruiterPages/RecruiterLogin';
+import HomePage from './pages/RecruiterPages/HomePage';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Route path='/signup' element={<SignUp/>}/>
           <Route path='/profile-creation' element={<CandidateProfile/>}/>
           <Route path='/recruiter-login' element={<RecruiterLogin/>}/>
+          <Route path='/homepage' element={<HomePage/>}/>
       </Routes>
     </BrowserRouter>
   )

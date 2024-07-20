@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IoEye, IoEyeOff, IoKey, IoPerson } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const RecruiterLogin = () => {
 
@@ -66,10 +67,11 @@ const RecruiterLogin = () => {
 
                   {/* sign in button */}
                   <div className="mt-7">
-                    <input 
-                      type="submit" 
-                      value="Log In"
-                      className="border-2 cursor-pointer border-primary rounded-full bg-primary text-white lg:px-12 sm:px-5 lg:py-2 sm:py-1 sm:text-sm lg:text-lg inline-block font-semibold hover:bg-white hover:text-primary hover:border-primary w-full" />
+                    <button 
+                      type="submit"
+                      className="border-2 cursor-pointer border-primary rounded-full bg-primary text-white lg:px-12 sm:px-5 lg:py-2 sm:py-1 sm:text-sm lg:text-lg inline-block font-semibold hover:bg-white hover:text-primary hover:border-primary w-full">
+                        <Link to="/homepage">Login</Link>
+                    </button>
                   </div>
                 
                 </form>

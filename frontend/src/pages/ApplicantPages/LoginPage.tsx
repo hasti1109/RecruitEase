@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { IoEye, IoEyeOff, IoKey, IoMail } from "react-icons/io5"
 import  login_logo  from "../../assets/login_logo.png";
-import job_offer from "../../assets/job-offer.png"
+import job_offer from "../../assets/main-logo.png"
 import { Link } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";

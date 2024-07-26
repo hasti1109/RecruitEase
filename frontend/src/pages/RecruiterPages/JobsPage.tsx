@@ -1,14 +1,14 @@
 import RecruiterSidebar from "../../components/RecruiterSidebar"
 
-const Dashboard = () => {
+const JobsPage = () => {
   return (
     <div className="flex">
       <RecruiterSidebar/>
       <div className="p-7 text-2xl font-semibold flex-1 h-screen">
-        <h1>Dashboard Page</h1>
+        <h1>Jobs Page</h1>
       </div>
     </div>
   )
 }
 
-export default Dashboard
+export default JobsPage

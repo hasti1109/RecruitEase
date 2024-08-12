@@ -11,13 +11,13 @@ const RecruiterSidebar = () => {
   const [open, setOpen] = useState(true);
   const Menus = [
     { title: "Dashboard", src: <FaChartPie />, path: '/dashboard' },
-  { title: "Jobs", src: <BsBriefcaseFill />, gap: true, path: '/jobs' },
-  { title: "Candidates", src: <BsPersonFill />, path: '/candidates' },
-  { title: "Applications", src: <BsClipboard2CheckFill />, path: '/applications' },
-  { title: "Interviews", src: <BsChatRightDotsFill />, path: '/interviews' },
-  { title: "Notifications", src: <BsBellFill />, gap: true, path: '/notifications' },
-  { title: "Settings", src: <IoSettings />, path: '/settings' },
-  { title: "Log Out", src: <TbLogout />, gap: true, isLogout: true, path: '/logout' },
+    { title: "Jobs", src: <BsBriefcaseFill />, gap: true, path: '/jobs' },
+    { title: "Candidates", src: <BsPersonFill />, path: '/candidates' },
+    { title: "Applications", src: <BsClipboard2CheckFill />, path: '/applications' },
+    { title: "Interviews", src: <BsChatRightDotsFill />, path: '/interviews' },
+    { title: "Notifications", src: <BsBellFill />, gap: true, path: '/notifications' },
+    { title: "Settings", src: <IoSettings />, path: '/settings' },
+    { title: "Log Out", src: <TbLogout />, gap: true, isLogout: true, path: '/logout' },
   ]
 
   const titles = ["RECRUITEMENT", "ORGANIZATION", ""];
@@ -31,7 +31,7 @@ const RecruiterSidebar = () => {
       <div className="absolute cursor-pointer -right-4 top-9 w-9 h-9 flex justify-center items-center bg-white border-[2.5px] rounded-full border-primary transition-transform duration-300 transform hover:scale-90" onClick={() => setOpen(!open)}>
         {open ? <IoArrowBack className="text-2xl"/> : <IoArrowForward className="text-2xl"/>}
       </div>
-      <div className={`flex gap-x-4 items-center duration-300 ${!open && 'scale-0'}`}>
+      <div className={`flex gap-x-3 items-center duration-300 ${!open && 'scale-0'}`}>
         <div className={`w-8 h-8 border-[2.5px] border-white rounded-full cursor-pointer duration-500`}>
           <img src={main_logo}/>
         </div>

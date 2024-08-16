@@ -45,6 +45,6 @@ Start the server
 
 **Authentication:** JWT
 
-**API:** GraphQL
+**API:** REST API
 
 

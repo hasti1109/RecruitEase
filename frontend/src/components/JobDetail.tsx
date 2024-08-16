@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IoLocationOutline } from 'react-icons/io5';
 import JobStatusSelector from './JobStatusSelector';
 
@@ -31,17 +31,6 @@ const JobDetail: React.FC<JobCardProps> = ({
     </React.Fragment>
   ));
   
-  const [jobs, setJobs] = useState<Job[]>([]);
-
-  const handleStatusChange = (jobId: string, newStatus: 'open' | 'closed' | 'paused') => {
-    console.log(jobId);
-    setJobs(prevJobs =>
-      prevJobs.map(job =>
-        job._id === jobId ? { ...job, status: newStatus } : job
-      )
-    );
-    // Optionally, send the status change to the server
-  };
 
   return (
     <div className="flex-col p-2">
@@ -69,15 +58,25 @@ const JobDetail: React.FC<JobCardProps> = ({
       <p className='font-semibold text-sm md:text-md mt-3'>CTC : <span className='text-xs md:text-sm font-normal text-gray-500'>{job.salary}</span></p>
 
       {/* no of applicants and opening */}
-      <p className='font-semibold text-sm md:text-md mt-2'>Total openings : <span className='text-xs md:text-sm font-normal text-gray-500'>{job.noOfOpenings}</span></p>
-      <p className='font-semibold text-sm md:text-md mt-2'>Total applicants : <span className='text-xs md:text-sm font-normal text-gray-500'>{job.noOfApplicants}</span></p>
+
+      <div className='flex justify-between'>
+        <p className='font-semibold text-sm md:text-md mt-2'>Total openings : <span className='text-xs md:text-sm font-normal text-gray-500'>{job.noOfOpenings}</span></p>
+        <p className='font-semibold text-sm md:text-md mt-2'>Posting date : <span className='text-xs md:text-sm font-normal text-gray-500'>{new Date(job.timestamp).toLocaleDateString()}</span></p>
+      </div>
+
+      <div className='flex justify-between'>
+        <p className='font-semibold text-sm md:text-md mt-2'>Total applicants : <span className='text-xs md:text-sm font-normal text-gray-500'>{job.noOfApplicants}</span></p>
+        <p className='font-semibold text-sm md:text-md mt-2'>Last date to apply : <span className='text-xs md:text-sm font-normal text-gray-500'>{new Date(job.lastDateToApply).toLocaleDateString()}</span></p>
+      </div>
 
       {/* job status */}
+      <p className='font-semibold text-sm md:text-md mt-2'>Job Status :</p>
       <JobStatusSelector
         key={job._id}
+        jobId={job._id}
         initialStatus={job.status}
-        onStatusChange={(newStatus) => handleStatusChange(job._id,newStatus)}
       />
+
 
     </div>
   );

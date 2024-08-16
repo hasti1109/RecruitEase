@@ -97,7 +97,7 @@ const changeJobStatus = asyncHandler(async (req, res) => {
       res.status(404).json({message: "Job not found"});
       return;
     }
-    res.status(200).json({message:"Job status updated successfully", updatedJob});
+    res.status(200).json({message:"Job status updated successfully!", updatedJob});
   }
   else{
     res.status(400).json({message: "Invalid job id"});

@@ -14,6 +14,7 @@ interface Job {
   timestamp: string; 
   lastDateToApply: string; 
   noOfOpenings: number;
+  noOfApplicants: number;
   salary: string,
   status: 'open' | 'closed' | 'paused';
 }

@@ -1,8 +1,9 @@
 import React from 'react';
 import { MdEdit } from 'react-icons/md';
-import { IoLocationOutline, IoPersonOutline } from 'react-icons/io5';
+import { IoLocationOutline, IoPersonOutline, } from 'react-icons/io5';
 import { RiMoneyRupeeCircleLine } from "react-icons/ri";
 import { FaArrowRight } from 'react-icons/fa6';
+import { BsPinAngle } from 'react-icons/bs';
 
 interface JobCardProps {
   title: string;
@@ -50,7 +51,7 @@ const JobCard: React.FC<JobCardProps> = ({
       </div>
 
       <div className='text-sm flex justify-between items-center'>
-        <p>{status}</p>
+        <p className={`${status === 'open' ? 'text-green-600' : status === 'closed' ? 'text-red-600' : status === 'paused' ? 'text-blue-600' : ''} font-semibold flex items-center`}><BsPinAngle/><span className='ml-1'>{status}</span></p>
         <button className='flex items-center bg-transparent text-primary border-[1.5px] border-primary px-4 py-2 rounded-xl hover:bg-primary hover:text-white focus:outline-none' onClick={onDetailsClick}>
           <span className='mr-2'>Details</span>
           <FaArrowRight />

@@ -6,6 +6,11 @@ const applicantSchema = mongoose.Schema({
     required: [true, "Please enter your name."],
     trim: true
   },
+  header: {
+    type: String,
+    required: [true, "Please enter an header."],
+    trim: true
+  },
   email: {
     type: String,
     required: [true, "Please enter your email id."],
@@ -16,19 +21,29 @@ const applicantSchema = mongoose.Schema({
     required: [true, "Please enter your phone number."],
     trim: true
   },
+  city: {
+    type: String,
+    required: [true, "Please enter your city."],
+    trim: true
+  },
   resume: {
     type: [String],
     required: [true, "Please upload your resume."],
     trim: true
   },
   coverLetter: {
-    type: String,
+    type: [String],
     required: false,
+    trim: true
+  },
+  interestedRoles: {
+    type: [String], // Array of strings representing positions interested for
+    required: true,
     trim: true
   },
   appliedPositions: {
     type: [String], // Array of strings representing positions applied for
-    required: true,
+    required: false,
     trim: true
   },
   status: { //should be visible to recruiter

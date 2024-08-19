@@ -16,6 +16,7 @@ const connectToDb = require('./config/db');
 connectToDb();
 
 app.use('/api/jobs', require('./routes/jobRoutes'));
+app.use('/api/applicants', require('./routes/applicantRoutes'));
 
 app.listen(PORT, () => {
   console.log(`Server started on port : ${PORT}`);

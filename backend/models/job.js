@@ -38,6 +38,11 @@ const jobSchema = mongoose.Schema({
     default: 0, 
     required: true
   },
+  applicantsApplied: {
+    type: [String],
+    ref: 'Applicant',
+    default: []
+  },
   noOfOpenings: {
     type: Number,
     required: [true, "Please specify the number of openings."]

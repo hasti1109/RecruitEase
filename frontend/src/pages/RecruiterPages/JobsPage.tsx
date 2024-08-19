@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import RecruiterSidebar from "../../components/RecruiterSidebar";
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import JobCard from '../../components/JobCard';
 import JobDetail from '../../components/JobDetail';
+import { FaPlus } from 'react-icons/fa6';
+import PostJobModal from '../../components/PostJobModal';
 
-// Define the shape of a job object
-interface Job {
+type Job = {
   _id: string;
   title: string;
   description: string;
@@ -19,10 +19,9 @@ interface Job {
   status: 'open' | 'closed' | 'paused';
 }
 
-const JobsPage: React.FC = () => {
-  // State to store job data
+const JobsPage = () => {
+
   const [jobs, setJobs] = useState<Job[]>([]);
-  // State to handle loading and error
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string|null>(null);
 
@@ -31,10 +30,13 @@ const JobsPage: React.FC = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        // Replace with your API URL
         const response = await axios.get<Job[]>('http://localhost:5000/api/jobs');
-        console.log(response.status);
-        setJobs(response.data); // Store jobs in state
+        const sortedJobs = response.data.sort((a, b) => {
+          const dateA = new Date(a.timestamp).getTime();
+          const dateB = new Date(b.timestamp).getTime();
+          return dateB - dateA; // Descending order
+        });
+        setJobs(sortedJobs);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred'); // Set error message if request fails
       } finally {
@@ -46,13 +48,21 @@ const JobsPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex">
-      <RecruiterSidebar />
-      <div className="p-7 flex-col h-screen bg-slate-100 w-full">
-        <div className='font-semibold text-xl'>All Jobs</div>
-        <div className='flex'>
-          {/* all jobs section */}
-        <div className='w-3/5 px-2'>
+    <div className="p-4 flex-col flex-grow overflow-y-auto  min-h-screen bg-slate-100 w-full m-0">
+
+      {/* header */}
+      <div className='flex items-center justify-between'>
+        <div className='font-semibold text-gray-700 font-secondary text- text-3xl p-3'>All Jobs</div>
+        <button className='flex items-center bg-primary hover:text-primary border-[1.5px] hover:border-primary px-3 py-2 rounded-xl hover:bg-transparent text-white focus:outline-none'>
+          <FaPlus />
+          <span className='ml-2'>Post a Job</span>
+        </button>
+        <PostJobModal/>
+      </div>
+
+      <div className='flex'>
+        {/* all jobs section */}
+        <div className='w-2/5 px-2'>
           {loading && <p>Loading jobs...</p>}
           {error && <p className="text-red-500">Error: {error}</p>}
           {jobs.length > 0 ? (
@@ -78,7 +88,7 @@ const JobsPage: React.FC = () => {
         </div>
 
         {/* job detail section */}
-        <div className='w-2/5 bg-white shadow-md rounded-lg p-3 mb-4 border border-gray-200'>
+        <div className='w-3/5 bg-white shadow-md rounded-lg p-3 mb-4 border border-gray-200 sticky top-0 h-screen overflow-y-auto'>
           <h2 className='font-bold text-lg text-primary '>Details</h2>
           <div className="border-2 w-full border-primary inline-block mb-2 mt-3"></div>
           {
@@ -88,7 +98,6 @@ const JobsPage: React.FC = () => {
               <p>Select a job to see details</p>
             )
           }
-        </div>
         </div>
       </div>
     </div>

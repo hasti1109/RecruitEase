@@ -1,12 +1,23 @@
 import RecruiterSidebar from "../../components/RecruiterSidebar";
+import { Routes, Route } from 'react-router-dom';
+import Dashboard from "./Dashboard";
+import JobsPage from "./JobsPage";
+import CandidatesPage from "./CandidatesPage";
 
 const HomePage = () => {
   return (
-    <div className="flex">
-      <RecruiterSidebar/>
-      <div className="p-7 text-2xl font-semibold flex-1 h-screen">
-        <h1>Home page</h1>
-      </div>
+    <div className="flex h-screen p-0 m-0">
+      <RecruiterSidebar />
+      <Routes>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="jobs" element={<JobsPage />} />
+          <Route path="candidates" element={<CandidatesPage />} />
+          <Route path="applications" element={<CandidatesPage />} />
+          <Route path="interviews" element={<CandidatesPage />} />
+          <Route path="notifications" element={<CandidatesPage />} />
+          <Route path="settings" element={<CandidatesPage />} />
+          <Route path="*" element={<Dashboard />} />
+        </Routes>
     </div>
   );
 }

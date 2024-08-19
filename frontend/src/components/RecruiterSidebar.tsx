@@ -10,14 +10,14 @@ const RecruiterSidebar = () => {
 
   const [open, setOpen] = useState(true);
   const Menus = [
-    { title: "Dashboard", src: <FaChartPie />, path: '/dashboard' },
-    { title: "Jobs", src: <BsBriefcaseFill />, gap: true, path: '/jobs' },
-    { title: "Candidates", src: <BsPersonFill />, path: '/candidates' },
-    { title: "Applications", src: <BsClipboard2CheckFill />, path: '/applications' },
-    { title: "Interviews", src: <BsChatRightDotsFill />, path: '/interviews' },
-    { title: "Notifications", src: <BsBellFill />, gap: true, path: '/notifications' },
-    { title: "Settings", src: <IoSettings />, path: '/settings' },
-    { title: "Log Out", src: <TbLogout />, gap: true, isLogout: true, path: '/logout' },
+    { title: "Dashboard", src: <FaChartPie />, path: '/home/dashboard' },
+    { title: "Jobs", src: <BsBriefcaseFill />, gap: true, path: '/home/jobs' },
+    { title: "Candidates", src: <BsPersonFill />, path: '/home/candidates' },
+    { title: "Applications", src: <BsClipboard2CheckFill />, path: '/home/applications' },
+    { title: "Interviews", src: <BsChatRightDotsFill />, path: '/home/interviews' },
+    { title: "Notifications", src: <BsBellFill />, gap: true, path: '/home/notifications' },
+    { title: "Settings", src: <IoSettings />, path: '/home/settings' },
+    // { title: "Log Out", src: <TbLogout />, gap: true, isLogout: true, path: '/logout' },
   ]
 
   const titles = ["RECRUITEMENT", "ORGANIZATION", ""];
@@ -26,7 +26,7 @@ const RecruiterSidebar = () => {
   const location = useLocation();
 
   return (
-    <div className={`${open ? 'w-72' : 'w-20'} h-auto bg-primary relative duration-700 p-5 pt-8`}>
+    <div className={`${open ? 'w-72' : 'w-20'} sticky top-0 h-screen bg-primary duration-700 p-5 pt-8`}>
 
       <div className="absolute cursor-pointer -right-4 top-9 w-9 h-9 flex justify-center items-center bg-white border-[2.5px] rounded-full border-primary transition-transform duration-300 transform hover:scale-90" onClick={() => setOpen(!open)}>
         {open ? <IoArrowBack className="text-2xl"/> : <IoArrowForward className="text-2xl"/>}
@@ -37,26 +37,35 @@ const RecruiterSidebar = () => {
         </div>
         <h1 className={`text-white origin-left font-semibold text-2xl`}>Recruit<span className="text-black">Ease</span></h1>
       </div>
-      <ul className="pt-6">
-        {Menus.map((menu, index) => (
-          <>
-          {menu.gap && titles[Math.floor(index / 3)] && (
-        <li 
-          key={`gap-${index}`}
-          className={`${!open && 'hidden'} text-secondary text-base font-semibold mt-5 origin-left duration-300`}>
-          {titles[Math.floor(index / 3)]}
-        </li>
-      )}
-          <li 
-          onClick={ () => navigate(menu.path)}
-            key={index}
-            className={`cursor-pointer flex gap-x-2 mt-2 px-2 py-3 items-center text-white text-base font-semibold hover:bg-primary-light rounded-lg ${location.pathname === menu.path ? 'bg-primary-light' : ''} ${!open && "text-xl"} ${!open && menu.gap && "mt-9"} ${menu.isLogout && 'mt-9'}`}>
-            {menu.src}
-            <span className={`${!open && 'hidden'} origin-left duration-300`}>{menu.title}</span>
-          </li>
-        </>
-        ))}
-      </ul>
+
+      <div className="flex-col items-end justify-between ">
+        <ul className="pt-6">
+          {Menus.map((menu, index) => (
+            <>
+              {/* heading */}
+              {menu.gap && titles[Math.floor(index / 3)] && (
+                <li 
+                  key={`gap-${index}`}
+                  className={`${!open && 'hidden'} text-secondary text-base font-semibold mt-5 origin-left duration-300`}>
+                  {titles[Math.floor(index / 3)]}
+                </li>
+              )}
+              {/* actual items */}
+              <li 
+                onClick={ () => navigate(menu.path)}
+                key={index}
+                className={`cursor-pointer flex gap-x-2 mt-2 px-2 py-3 items-center w-full min-w-full text-white text-base font-semibold hover:bg-primary-light rounded-lg ${location.pathname === menu.path ? 'bg-primary-light' : ''} ${!open && "text-xl"} ${!open && menu.gap && "mt-9"}`}>
+                {menu.src}
+                <span className={`${!open && 'hidden'} origin-left duration-300`}>{menu.title}</span>
+              </li>
+            </>
+          ))}
+        </ul>
+        <div className={`cursor-pointer flex gap-x-2 mt-5 px-2 py-3 items-center w-full min-w-full text-white text-base font-semibold hover:bg-primary-light rounded-lg ${!open && "text-xl"}`}>
+         <TbLogout/>
+         <span className={`${!open && 'hidden'} origin-left duration-300`}>Logout</span>
+        </div>
+      </div>
     </div>
   )
 }

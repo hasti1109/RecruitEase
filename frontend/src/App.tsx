@@ -7,6 +7,7 @@ import HomePage from './pages/RecruiterPages/HomePage';
 import ErrorPage from './pages/ErrorPage';
 import Dashboard from './pages/RecruiterPages/Dashboard';
 import JobsPage from './pages/RecruiterPages/JobsPage';
+import CandidatesPage from './pages/RecruiterPages/CandidatesPage';
 
 function App() {
   return (
@@ -16,9 +17,7 @@ function App() {
           <Route path='/signup' element={<SignUp/>}/>
           <Route path='/profile-creation' element={<CandidateProfile/>}/>
           <Route path='/recruiter-login' element={<RecruiterLogin/>}/>
-          <Route path='/homepage' element={<HomePage/>}/>
-          <Route path='/dashboard' element={<Dashboard/>}/>
-          <Route path='/jobs' element={<JobsPage/>}/>
+          <Route path='/home/*' element={<HomePage/>}/>
           <Route path='*' element={<ErrorPage/>}/>
       </Routes>
     </BrowserRouter>

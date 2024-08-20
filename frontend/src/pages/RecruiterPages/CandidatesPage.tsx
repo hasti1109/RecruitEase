@@ -75,23 +75,25 @@ const CandidatesPage = () => {
     <div className="p-4 flex-col flex-grow overflow-y-auto min-h-screen bg-slate-100 w-full m-0">
 
       <div className='font-semibold text-gray-700 font-secondary text- text-3xl p-3'>All Candidates</div>
-      <div className='flex'>
+      <div className='flex flex-col md:flex-row'>
 
         {/* filters */}
-        <div className='w-3/12 bg-white py-2 px-3 border rounded-md border-slate-300 ml-2 sticky top-0 h-5/6'>
+        <div className='w-full md:w-3/12 bg-white py-2 px-3 border rounded-md border-slate-300 ml-2 md:sticky top-0 h-5/6'>
           <h2 className='font-bold text-lg text-primary mt-2'>Filters</h2>
           <div className="border-2 w-full border-primary inline-block mb-2 mt-3"></div>
 
-          <StatusFilter onFilterChange={handleStatusFilterChange}/>
-          
-          {/* spacer */}
-          <div className="mt-6"></div>
+          <div className="flex md:flex-col gap-x-3">
+            <StatusFilter onFilterChange={handleStatusFilterChange}/>
+            
+            {/* spacer */}
+            <div className="mt-6"></div>
 
-          <TitleFilter onFilterChange={handleTitleFilterChange}/>
+            <TitleFilter onFilterChange={handleTitleFilterChange}/>
+          </div>
         </div>
 
         {/* all candidates section */}
-        <div className='w-4/6 border rounded-md border-slate-300 ml-2'>
+        <div className='md:w-4/6 border rounded-md border-slate-300 ml-2 mt-6 md:mt-0'>
           {/* Items header */}
           <div className="flex w-full justify-around gap-x-5 py-2 text-sm border-b border-slate-300 bg-slate-300 pl-3">
             {titles.map((title, index) => (

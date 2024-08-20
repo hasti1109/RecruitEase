@@ -59,18 +59,45 @@ const JobDetail: React.FC<JobCardProps> = ({
 
       {/* no of applicants and opening */}
 
-      <div className='flex justify-between'>
-        <p className='font-semibold text-sm md:text-md mt-5'>Total openings : <span className='text-xs md:text-sm font-normal text-gray-500'>{job.noOfOpenings}</span></p>
-        <p className='font-semibold text-sm md:text-md mt-5'>Posting date : <span className='text-xs md:text-sm font-normal text-gray-500'>{new Date(job.timestamp).toLocaleDateString()}</span></p>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+        <div className='mt-5'>
+          <p className='font-semibold text-sm md:text-md'>
+            Total openings : 
+            <span className='text-xs md:text-sm font-normal text-gray-500'>
+              {job.noOfOpenings}
+            </span>
+          </p>
+        </div>
+        <div className='mt-2'>
+          <p className='font-semibold text-sm md:text-md'>
+            Posting date : 
+            <span className='text-xs md:text-sm font-normal text-gray-500'>
+              {new Date(job.timestamp).toLocaleDateString()}
+            </span>
+          </p>
+        </div>
+        <div className='mt-2'>
+          <p className='font-semibold text-sm md:text-md'>
+            Total applicants : 
+            <span className='text-xs md:text-sm font-normal text-gray-500'>
+              {job.noOfApplicants}
+            </span>
+          </p>
+        </div>
+        <div className='mt-2'>
+          <p className='font-semibold text-sm md:text-md'>
+            Last date to apply : 
+            <span className='text-xs md:text-sm font-normal text-gray-500'>
+              {new Date(job.lastDateToApply).toLocaleDateString()}
+            </span>
+          </p>
+        </div>
       </div>
 
-      <div className='flex justify-between'>
-        <p className='font-semibold text-sm md:text-md mt-5'>Total applicants : <span className='text-xs md:text-sm font-normal text-gray-500'>{job.noOfApplicants}</span></p>
-        <p className='font-semibold text-sm md:text-md mt-5'>Last date to apply : <span className='text-xs md:text-sm font-normal text-gray-500'>{new Date(job.lastDateToApply).toLocaleDateString()}</span></p>
-      </div>
+
 
       {/* job status */}
-      <p className='font-semibold text-sm md:text-md mt-5'>Job Status :</p>
+      <p className='font-semibold text-sm md:text-md mt-5 mb-3'>Job Status :</p>
       <JobStatusSelector
         key={job._id}
         jobId={job._id}

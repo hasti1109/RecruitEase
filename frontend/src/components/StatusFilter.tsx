@@ -22,7 +22,7 @@ const StatusFilter: React.FC<StatusFilterProps> = ({onFilterChange}) => {
   return (
     <div className="relative">
       <div className="flex justify-between items-center font-semibold">Status</div>
-      <div className="grid grid-cols-2 mt-1 text-xs bg-transparent">
+      <div className="grid lg:grid-cols-2 mt-1 text-xs bg-transparent">
         {statusOptions.map(status => (
           <CheckBox
             key={status}

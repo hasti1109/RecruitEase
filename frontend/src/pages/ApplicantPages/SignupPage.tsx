@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 //import { Toaster } from "react-hot-toast";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 
 type FormFields = {
   email: string;
@@ -26,19 +27,17 @@ const SignUp = () => {
     formState: { errors, isSubmitting } 
   } = useForm<FormFields>();
 
-  const onSubmit: SubmitHandler<FormFields> = async(data) => {
+  const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      //simulation for checking db data
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log(data);
-      //simutlation for getting an error from backend
-      if (false) throw new Error();
-      toast.success("Successfully created account!")
-    } catch (error) {
-      toast.error("Error creating account. Try again later.");
-      setError("email",{
-        message: "Invalid email Id."
-      })
+      const response= await axios.post("http://localhost:5000/api/applicants",);
+      if(response.status == 201){
+        toast.success("Successfully added new job posting.");
+      }
+      else{
+        throw new Error("Server error.");
+      }
+    } catch (e) {
+      toast.error(e + "Try again later.");
     }
   }
 

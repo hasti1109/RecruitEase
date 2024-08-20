@@ -24,8 +24,8 @@ const JobsPage = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string|null>(null);
-
   const [selectedJob, setSelectedJob] = useState<Job|null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -47,17 +47,20 @@ const JobsPage = () => {
     fetchJobs();
   }, []);
 
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
   return (
     <div className="p-4 flex-col flex-grow overflow-y-auto  min-h-screen bg-slate-100 w-full m-0">
 
       {/* header */}
       <div className='flex items-center justify-between'>
         <div className='font-semibold text-gray-700 font-secondary text- text-3xl p-3'>All Jobs</div>
-        <button className='flex items-center bg-primary hover:text-primary border-[1.5px] hover:border-primary px-3 py-2 rounded-xl hover:bg-transparent text-white focus:outline-none'>
+        <button className='flex items-center bg-primary hover:text-primary border-[1.5px] hover:border-primary px-3 py-2 rounded-xl hover:bg-transparent text-white focus:outline-none' onClick={handleOpenModal}>
           <FaPlus />
           <span className='ml-2'>Post a Job</span>
         </button>
-        <PostJobModal/>
+        {isModalOpen && <PostJobModal onClose={handleCloseModal}/>}
       </div>
 
       <div className='flex'>

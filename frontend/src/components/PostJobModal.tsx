@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
+import { IoClose } from 'react-icons/io5';
 
 type FormFields = {
   title: string;
@@ -14,7 +15,11 @@ type FormFields = {
   noOfOpenings: number;
 }
 
-const PostJobModal = () => {
+type PostJobModalProps = {
+  onClose: () => void;
+}
+
+const PostJobModal:React.FC<PostJobModalProps> = ({onClose}) => {
 
   const divClasses = 'bg-gray-200 w-full py-2 rounded-lg flex gap-x-2 h-3/5';
   const inputClasses = 'border-none ml-2 flex-1 outline-none bg-gray-200 text-sm';
@@ -22,7 +27,6 @@ const PostJobModal = () => {
   const { 
     register, 
     handleSubmit, 
-    getValues,
     formState: { errors, isSubmitting } 
     } = useForm<FormFields>();
 
@@ -44,23 +48,30 @@ const PostJobModal = () => {
         lastDateToApply: new Date(data.lastDateToApply),
         noOfOpenings: data.noOfOpenings
       };
+      console.log(newJob);
       const response= await axios.post("http://localhost:5000/api/jobs", newJob);
-      if(response.status === 201){
-        // console.log(data);
-        // console.log(reqs);
+      if(response.status == 201){
         toast.success("Successfully added new job posting.");
       }
       else{
         throw new Error("Server error.");
       }
     } catch (e) {
-      toast.error("Error posting job. Try again later." + e);
+      toast.error(e + "Try again later.");
+    }
+    finally{
+      onClose();
     }
   }
-  
+
   return (
-    <Dialog open={false} fullWidth>
-      <DialogTitle>Post a job</DialogTitle>
+    <Dialog open={true} onClose={onClose} fullWidth>
+      <DialogTitle>
+        <div className='flex items-center justify-between'>
+          Post a job
+          <IoClose className='cursor-pointer' onClick={onClose}/>
+        </div>
+      </DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='grid grid-cols-2 grid-rows-3 gap-x-4 gap-y-2'>
@@ -170,7 +181,7 @@ const PostJobModal = () => {
               <input 
                 type="submit" 
                 value={isSubmitting ? "Submitting.." : "Submit"} 
-                className="border-2 cursor-pointer border-primary rounded-full bg-primary text-white lg:px-12 sm:px-5 lg:py-2 sm:py-1 sm:text-sm lg:text-lg inline-block font-semibold hover:bg-white hover:text-primary hover:border-primary w-full" />
+                className="border-2 cursor-pointer border-primary rounded-full bg-primary text-white lg:px-12 sm:px-5 lg:py-2 py-2 sm:text-sm lg:text-lg inline-block font-semibold hover:bg-white hover:text-primary hover:border-primary w-full" />
             </div>
           </form>
       </DialogContent>

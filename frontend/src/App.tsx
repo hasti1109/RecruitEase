@@ -1,7 +1,7 @@
 import {Routes, Route, BrowserRouter} from 'react-router-dom';
 import Login from "./pages/ApplicantPages/LoginPage"
 import SignUp from './pages/ApplicantPages/SignupPage';
-import CandidateProfile from './pages/ApplicantPages/CandidateProfile';
+import CandidateProfile from './pages/ApplicantPages/ProfileCreattion';
 import RecruiterLogin from './pages/RecruiterPages/RecruiterLogin';
 import HomePage from './pages/RecruiterPages/HomePage';
 import ErrorPage from './pages/ErrorPage';

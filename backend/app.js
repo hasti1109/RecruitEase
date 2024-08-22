@@ -17,6 +17,7 @@ connectToDb();
 
 app.use('/api/jobs', require('./routes/jobRoutes'));
 app.use('/api/applicants', require('./routes/applicantRoutes'));
+app.use('/api/applications', require('./routes/applicationRoutes'));
 
 app.listen(PORT, () => {
   console.log(`Server started on port : ${PORT}`);

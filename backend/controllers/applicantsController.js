@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const Applicant = require('../models/applicant');
-const {ObjectId} = require('mongodb')
+const {ObjectId} = require('mongodb');
 
 //@desc Get all applicants
 //@route GET /api/applicants

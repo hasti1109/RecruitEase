@@ -93,19 +93,21 @@ const JobDetail: React.FC<JobCardProps> = ({
           </p>
         </div>
       </div>
+        
+      <div className='flex justify-between items-end'>
+        {/* job status */}
+        <div className='flex flex-col'>
+          <p className='font-semibold text-sm md:text-md mt-5 mb-3'>Job Status :</p>
+          <JobStatusSelector
+            key={job._id}
+            jobId={job._id}
+            initialStatus={job.status}
+          />
+        </div>
 
-
-
-      {/* job status */}
-      <p className='font-semibold text-sm md:text-md mt-5 mb-3'>Job Status :</p>
-      <JobStatusSelector
-        key={job._id}
-        jobId={job._id}
-        initialStatus={job.status}
-      />
-
-      {/* view all applicants */}
-      
+        {/* view all applications */}
+        <button className="text-sm border-2 cursor-pointer border-primary rounded-full bg-primary text-white font-semibold hover:bg-white hover:text-primary hover:border-primary px-2 py-3 h-1/2">View all applications</button>
+      </div>
 
     </div>
   );

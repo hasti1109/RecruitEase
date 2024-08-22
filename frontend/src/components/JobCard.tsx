@@ -1,5 +1,5 @@
 import React from 'react';
-import { MdEdit } from 'react-icons/md';
+import { RiDeleteBin5Fill } from "react-icons/ri";
 import { IoLocationOutline, IoPersonOutline, } from 'react-icons/io5';
 import { RiMoneyRupeeCircleLine } from "react-icons/ri";
 import { FaArrowRight } from 'react-icons/fa6';
@@ -30,7 +30,7 @@ const JobCard: React.FC<JobCardProps> = ({
     <div className="bg-white shadow-md rounded-lg p-3 mb-4 border border-gray-200 ">
       <div className='flex justify-between items-center'>
         <div className='bg-slate-200 rounded-lg w-auto p-2 text-xs'>{new Date(timestamp).toLocaleDateString()}</div>
-        <div className='cursor-pointer'><MdEdit/></div>
+        {status === 'closed' && <div className='cursor-pointer'><RiDeleteBin5Fill className='text-error'/></div>}
       </div>
 
       <h2 className="text-xl font-semibold text-gray-700">{title}</h2>

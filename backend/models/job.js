@@ -16,6 +16,10 @@ const jobSchema = mongoose.Schema({
     required: [true, "Please list the job requirements."],
     trim: true
   },
+  keywords: {
+    type:[String],
+    required: true,
+  },
   location: {
     type: String,
     required: [true, "Please specify the job location."],
@@ -38,9 +42,9 @@ const jobSchema = mongoose.Schema({
     default: 0, 
     required: true
   },
-  applicantsApplied: {
+  applications: {
     type: [String],
-    ref: 'Applicant',
+    ref: 'Application',
     default: []
   },
   noOfOpenings: {

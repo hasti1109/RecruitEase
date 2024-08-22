@@ -30,18 +30,18 @@ const getJob = asyncHandler(async (req,res) => {
   }
 });
 
-//@desc Get all applicants for a job
-//@route GET /api/jobs/:id/applicants
-//returns an array of applicant objects
-const getApplicants = asyncHandler(async (req,res) => {
+//@desc Get all applications for a job
+//@route GET /api/jobs/:id/applications
+//returns an array of application objects
+const getApplications = asyncHandler(async (req,res) => {
   const jobId = req.params.id;
   if(ObjectId.isValid(jobId)){
-    const job = await Job.findById(jobId).populate('applicantsApplied');
+    const job = await Job.findById(jobId).populate('applications');
     if (!job){
       res.status(404).json({message:'Couldnt find job.'})
       return
     }
-    res.status(200).json(job.applicantsApplied);
+    res.status(200).json(job.applications);
   }
   else{
     res.status(400).json({message: "Invalid job id"});
@@ -140,4 +140,4 @@ const deleteJob = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = {getJobs, createJob, getJob,getApplicants, updateJob, deleteJob, changeJobStatus};
+module.exports = {getJobs, createJob, getJob, getApplications, updateJob, deleteJob, changeJobStatus};

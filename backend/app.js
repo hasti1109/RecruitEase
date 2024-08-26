@@ -15,6 +15,7 @@ app.use(cors({
 const connectToDb = require('./config/db');
 connectToDb();
 
+app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/jobs', require('./routes/jobRoutes'));
 app.use('/api/applicants', require('./routes/applicantRoutes'));
 app.use('/api/applications', require('./routes/applicationRoutes'));

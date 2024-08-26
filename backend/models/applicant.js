@@ -3,55 +3,60 @@ const mongoose = require('mongoose');
 const applicantSchema = mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please enter your name."],
-    trim: true
+    trim: true,
+  },
+  password: {
+    type: String,
+    required: [true, "Please enter your password"],
+    trim: true,
   },
   header: {
     type: String,
-    required: [true, "Please enter an header."],
-    trim: true
+    trim: true,
+  },
+  description: {
+    type: String,
+    trim: true,
   },
   email: {
     type: String,
     required: [true, "Please enter your email id."],
-    trim: true
+    trim: true,
+    unique: true, // Ensure email is unique
   },
   phoneNumber: {
     type: String,
-    required: [true, "Please enter your phone number."],
-    trim: true
+    trim: true,
   },
   city: {
     type: String,
-    required: [true, "Please enter your city."],
-    trim: true
+    trim: true,
   },
   resume: {
     type: [String],
-    required: [true, "Please upload your resume."],
-    trim: true
+    trim: true,
   },
   coverLetter: {
     type: [String],
-    required: false,
-    trim: true
+    trim: true,
   },
   interestedRoles: {
-    type: [String], // Array of strings representing positions interested for
-    required: true,
-    trim: true
+    type: [String],
+    trim: true,
   },
   appliedPositions: {
-    type: [String], // Array of strings representing positions applied for
-    required: false,
-    trim: true
-  },
-  status: { //should be visible to recruiter
-    type: String,
-    required: true,
+    type: [String],
     trim: true,
-    enum: ['applied', 'not applied','under review', 'interviewing', 'offered', 'hired', 'rejected'], 
-  }
+  },
+  status: {
+    type: String,
+    trim: true,
+    enum: ['applied', 'not applied', 'under review', 'interviewing', 'offered', 'hired', 'rejected'],
+  },
+  password: {
+    type: String,
+    required: [true, "Please enter your password."],
+  },
 });
 
 module.exports = mongoose.model('Applicant', applicantSchema);

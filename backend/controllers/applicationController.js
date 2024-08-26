@@ -100,4 +100,31 @@ const getApplication = asyncHandler(async (req,res) => {
   }
 });
 
-module.exports = {getApplication, getApplications, createApplication}
+//@desc Get applicant of that application
+//@route GET /api/applications/:id/applicant
+const getApplicant = asyncHandler(async (req,res) => {
+  const applicationId = req.params.id;
+  console.log(applicationId);
+  if(ObjectId.isValid(applicationId)){
+    const application = await Application.findById(applicationId);
+
+    if (!application) {
+      res.status(404);
+      throw new Error('Application not found');
+    }
+
+    const applicant = await Applicant.findById(application.applicant);
+
+    if (!applicant) {
+      res.status(404);
+      throw new Error('Applicant not found');
+    }
+
+    res.status(200).json(applicant);
+  } else {
+    res.status(400);
+    throw new Error('Invalid application ID');
+  }
+});
+
+module.exports = {getApplication, getApplications, createApplication, getApplicant}

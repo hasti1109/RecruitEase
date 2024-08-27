@@ -1,13 +1,12 @@
 import {Routes, Route, BrowserRouter} from 'react-router-dom';
 import Login from "./pages/ApplicantPages/LoginPage"
 import SignUp from './pages/ApplicantPages/SignupPage';
-import CandidateProfile from './pages/ApplicantPages/ProfileCreattion';
+import CandidateProfile from './pages/ApplicantPages/ProfileCreation';
 import RecruiterLogin from './pages/RecruiterPages/RecruiterLogin';
 import HomePage from './pages/RecruiterPages/HomePage';
 import ErrorPage from './pages/ErrorPage';
-import Dashboard from './pages/RecruiterPages/Dashboard';
-import JobsPage from './pages/RecruiterPages/JobsPage';
-import CandidatesPage from './pages/RecruiterPages/CandidatesPage';
+import {HomePage as ApplicantHomePage} from './pages/ApplicantPages/HomePage'
+import JobDetailsPage from './pages/ApplicantPages/JobDetailsPage';
 
 function App() {
   return (
@@ -18,6 +17,8 @@ function App() {
           <Route path='/profile-creation' element={<CandidateProfile/>}/>
           <Route path='/recruiter-login' element={<RecruiterLogin/>}/>
           <Route path='/home/*' element={<HomePage/>}/>
+          <Route path='/homepage' element={<ApplicantHomePage/>}/>
+          <Route path='/jobs/:id' element={<JobDetailsPage/>}/>
           <Route path='*' element={<ErrorPage/>}/>
       </Routes>
     </BrowserRouter>

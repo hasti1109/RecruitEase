@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { IoArrowBack, IoArrowForward, IoSettings} from "react-icons/io5"
 import { FaChartPie } from "react-icons/fa6";
 import { BsBriefcaseFill,BsClipboard2CheckFill, BsChatRightDotsFill,BsBellFill, BsPersonFill } from "react-icons/bs";
-import main_logo from '../assets/main-logo.png'
+import main_logo from '../../assets/main-logo.png'
 import { TbLogout } from "react-icons/tb";
 
 const RecruiterSidebar = () => {

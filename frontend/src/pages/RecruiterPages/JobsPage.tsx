@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import JobCard from '../../components/JobCard';
-import JobDetail from '../../components/JobDetail';
+import JobCard from '../../components/Recruiter/JobCard';
+import JobDetail from '../../components/Recruiter/JobDetail';
 import { FaPlus } from 'react-icons/fa6';
-import PostJobModal from '../../components/PostJobModal';
+import PostJobModal from '../../components/Recruiter/PostJobModal';
+import ApplicationDetails from '../../components/Recruiter/ApplicationDetails';
+import { IoLocationOutline } from 'react-icons/io5';
 
 type Job = {
   _id: string;
@@ -25,6 +27,7 @@ const JobsPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string|null>(null);
   const [selectedJob, setSelectedJob] = useState<Job|null>(null);
+  const [toggleState, setToggleState] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -49,12 +52,15 @@ const JobsPage = () => {
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
+  const toggleTab = (index: number) => {
+    setToggleState(index);
+  }
 
   return (
     <div className="p-4 flex-col flex-grow overflow-y-auto  min-h-screen bg-slate-100 w-full m-0">
 
       {/* header */}
-      <div className='flex items-center justify-between'>
+      <div className='flex items-center justify-between mb-5'>
         <div className='font-semibold text-gray-700 font-secondary text- text-3xl p-3'>All Jobs</div>
         <button className='flex items-center bg-primary hover:text-primary border-[1.5px] hover:border-primary px-3 py-2 rounded-xl hover:bg-transparent text-white focus:outline-none' onClick={handleOpenModal}>
           <FaPlus />
@@ -65,7 +71,7 @@ const JobsPage = () => {
 
       <div className='flex'>
         {/* all jobs section */}
-        <div className='w-2/5 px-2'>
+        <div className={`w-2/5 px-2`}>
           {loading && <p>Loading jobs...</p>}
           {error && <p className="text-red-500">Error: {error}</p>}
           {jobs.length > 0 ? (
@@ -73,6 +79,7 @@ const JobsPage = () => {
               {jobs.map(job => (
                 <JobCard
                   key={job._id}
+                  _id={job._id}
                   title={job.title}
                   description={job.requirements}
                   location={job.location}
@@ -90,18 +97,43 @@ const JobsPage = () => {
           )}
         </div>
 
-        {/* job detail section */}
-        <div className='w-3/5 bg-white shadow-md rounded-lg p-3 mb-4 border border-gray-200 sticky top-0 h-screen overflow-y-auto'>
-          <h2 className='font-bold text-lg text-primary '>Details</h2>
-          <div className="border-2 w-full border-primary inline-block mb-2 mt-3"></div>
-          {
-            selectedJob ? (
-              <JobDetail job = {selectedJob}/>
-            ) : (
-              <p>Select a job to see details</p>
-            )
-          }
+        {/* job detail and applications tabs */}
+        <div className={` w-3/5 bg-white shadow-md rounded-lg p-3 mb-4 border border-gray-200 sticky top-0 h-screen overflow-y-auto`}>
+          <div className='bloc-tabs flex flex-row justify-around font-bold text-lg text-primary cursor-pointer mb-5'>
+            <div className={`${toggleState === 1 ? 'border-b-4 border-primary' : ''}`} onClick={() => toggleTab(1)}>Details</div>
+            <div className={`${toggleState === 2 ? 'border-b-4 border-primary' : ''}`} onClick={() => toggleTab(2)}>Applications</div>
+          </div>
+
+          <div className='content-tabs'>
+            <div className={`${toggleState === 1 ? 'block' : 'hidden'}`}>
+              {
+              selectedJob ? (
+                <JobDetail job = {selectedJob}/>
+              ) : (
+                <p>Select a job to see details</p>
+              )
+            }
+            </div>
+
+            {/* aplications tab */}
+            <div className={`${toggleState === 2 ? 'block' : 'hidden'}`}>
+              {
+                selectedJob ? (
+                  <>
+                    <div className='mb-2 p-2 flex justify-between items-center border-t-2'>
+                      <h1 className='md:text-xl font-semibold text-gray-700'>{selectedJob.title}</h1>
+                      <span className='text-xs md:text-sm font-semibold text-gray-500 flex items-center'>{selectedJob.location}<IoLocationOutline/></span>
+                    </div>
+                  <ApplicationDetails job = {selectedJob}/>
+                  </>
+                ) : (
+                  <p>Select a job to see applications</p>
+                )
+              }
+            </div>
+          </div>
         </div>
+        
       </div>
     </div>
   );

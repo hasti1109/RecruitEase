@@ -2,7 +2,7 @@ import { useState } from "react";
 import { IoEye, IoEyeOff, IoKey, IoMail } from "react-icons/io5"
 import  login_logo  from "../../assets/login_logo.png";
 import job_offer from '../../assets/main-logo.png'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 //import { Toaster } from "react-hot-toast";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
@@ -18,26 +18,35 @@ const SignUp = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate();
 
   const { 
     register, 
     handleSubmit, 
     getValues,
-    setError,
     formState: { errors, isSubmitting } 
   } = useForm<FormFields>();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      const response= await axios.post("http://localhost:5000/api/applicants",);
-      if(response.status == 201){
-        toast.success("Successfully added new job posting.");
+      if(getValues('password')===getValues('confirmPassword')){
+        const response= await axios.post("http://localhost:5000/api/auth/signup",data);
+        //console.log(data);
+        if(response.status == 201){
+          toast.success("Signed up sucecssfully! Going to profile page...");
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          navigate(`/profile-creation?email=${data.email}`);
+        }
+        else{
+          throw new Error(response.data.message);
+        }
       }
       else{
-        throw new Error("Server error.");
+        throw new Error("Passwords do not match");
       }
+      
     } catch (e) {
-      toast.error(e + "Try again later.");
+      toast.error(e + ".Try again later.");
     }
   }
 

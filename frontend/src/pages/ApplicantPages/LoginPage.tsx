@@ -2,9 +2,10 @@ import { useState } from "react";
 import { IoEye, IoEyeOff, IoKey, IoMail } from "react-icons/io5"
 import  login_logo  from "../../assets/login_logo.png";
 import job_offer from "../../assets/main-logo.png"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 
 type FormFields = {
   email: string;
@@ -14,6 +15,7 @@ type FormFields = {
 const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
   
   const { 
     register, 
@@ -29,27 +31,23 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      //simulation for checking db data
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log(data);
-      //simutlation for getting an error from backend
-      if(getValues("password")==="hasti1109") {
-        toast.success("signed in successfully!")
+      //console.log(data);
+      const response = await axios.post('http://localhost:5000/api/auth/login', data , {
+        validateStatus: (status) => {
+          return status < 500;
+        }
+      });
+      if(response.status === 200){
+        toast.success('Login successful.');
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        const applicantData = response.data.existingUser;
+        navigate('/homepage', { state: applicantData });
       }
-      else throw new Error("Incorrect password");
-    } catch (e) {
-      toast.error("Error signing in. Try again later.");
-      if (e instanceof Error) {
-        setError("password", {
-          type: "manual",
-          message: e.message, // Accessing the message of the error
-        });
-      } else {
-        setError("password", {
-          type: "manual",
-          message: "An unknown error occurred",
-        });
+      else{
+        throw new Error(response.data.message);
       }
+    } catch (error) {
+      toast.error(error+ '.');
     }
   }
 

@@ -25,7 +25,7 @@ const createApplicant = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: 'Please fill all the required fields.' });
   }
 
-  // Check if the applicant already exists
+  // Check if the applicant email already exists
   const existingApplicant = await Applicant.findOne({ email });
 
   if (existingApplicant) {
@@ -40,9 +40,8 @@ const createApplicant = asyncHandler(async (req, res) => {
 
     const updatedApplicant = await existingApplicant.save();
 
-    return res.status(201).json({ message: 'Applicant updated successfully', updatedApplicant });
+    return res.status(201).json(updatedApplicant._id);
   } else {
-    // Create new applicant
     const applicant = new Applicant({
       name,
       email,
@@ -56,11 +55,10 @@ const createApplicant = asyncHandler(async (req, res) => {
     });
 
     const createdApplicant = await applicant.save();
-
-    return res.status(201).json({ message: 'Applicant added successfully', createdApplicant });
+    console.log(createdApplicant);
+    return res.status(201).json(createdApplicant._id);
   }
 });
-
 
 //@desc Get one applicant
 //@route GET /api/applicants/:id
@@ -100,6 +98,5 @@ const getJobs = asyncHandler(async (req, res) => {
     res.status(400).json({ message: 'Invalid applicant ID' });
   }
 });
-
 
 module.exports = {getApplicants, getApplicant, createApplicant, getJobs};

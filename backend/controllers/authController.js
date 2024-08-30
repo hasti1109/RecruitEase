@@ -3,12 +3,14 @@ const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
 const Applicant = require('../models/applicant'); // Assuming you have a User model defined in models/User.js
 
+//@desc Sign up applicant
+//@route POST /api/auth/signup
 const signupApplicant = asyncHandler(async (req, res) => {
     const { email, password, confirmPassword } = req.body;
 
     // Validate input
     if (!email || !password || !confirmPassword) {
-        return res.status(400).json({ message: 'All fields are required' });
+        return res.status(404).json({ message: 'All fields are required' });
     }
 
     if (password !== confirmPassword) {
@@ -18,7 +20,7 @@ const signupApplicant = asyncHandler(async (req, res) => {
     // Check if user already exists
     const existingUser = await Applicant.findOne({ email });
     if (existingUser) {
-        return res.status(400).json({ message: 'User already exists' });
+        return res.status(409).json({ message: 'User already exists' });
     }
 
     // Hash the password
@@ -35,6 +37,8 @@ const signupApplicant = asyncHandler(async (req, res) => {
     res.status(201).json({ message: 'User registered successfully', email});
 });
 
+//@desc Login applicant
+//@route POST /api/auth/login
 const loginApplicant = asyncHandler(async (req, res) => {
     const {email, password} = req.body;
     if (!email || !password){
@@ -56,9 +60,8 @@ const loginApplicant = asyncHandler(async (req, res) => {
     // Example:
     // const token = generateToken(applicant._id);
 
-    res.status(200).json({ message: 'Login successful', existingUser });
+    res.status(200).json({ message: 'Login successful', userId : existingUser._id });
 
 });
-
 
 module.exports = {signupApplicant, loginApplicant};

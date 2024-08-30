@@ -1,7 +1,9 @@
 
 const Dashboard = () => {
   return (
-     <h1>dashboard page</h1>
+     <div className="flex justify-center items-center w-full">
+      Dashboard page
+     </div>
   )
 }
 

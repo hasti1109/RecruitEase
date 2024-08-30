@@ -3,8 +3,12 @@ import { useEffect, useState } from 'react';
 
 type Application = {
   _id: String,
-  applicant: String,
-  jobPosition: String,
+  applicant: {
+    name: String;
+  },
+  jobPosition: {
+    title: String;
+  },
   status: String,
   score: number,
   resume: String;
@@ -38,7 +42,7 @@ const ApplicationsPage = () => {
     score > 60 ? 2 :
     1;
 
-  const titles = ['Name','Job', 'Reusme', 'Status', 'Ready', 'Score'];
+  const titles = ['Name', 'Job', 'Reusme', 'Status', 'Ready', 'Score'];
 
   return (
     <div className='p-4 flex-col flex-grow overflow-y-auto  min-h-screen bg-slate-100 w-full m-0 md:px-10'>
@@ -66,8 +70,8 @@ const ApplicationsPage = () => {
           <div className="flex flex-col">
             {applications.map((application, index) => (
               <div key={index} className="flex justify-around gap-x-5 py-2 border-b border-slate-300 cursor-pointer pl-3 text-sm">
-                <span className="flex-1 text-left">{application.status || 'Fetching...'}</span>
-                <span className="flex-1 text-left">{application.status || 'Fetching...'}</span>
+                <span className="flex-1 text-left">{application.applicant.name || 'Fetching...'}</span>
+                <span className="flex-1 text-left">{application.jobPosition.title || 'Fetching...'}</span>
                 <span className="flex-1 text-left cursor-pointer text-blue-500 underline">{application.resume}</span>
                 <span className={`flex-1 font-semibold text-left ${application.status=="Accepted" ? 'text-green-500' : application.status=="rejected" ? 'text-red-500' : application.status=="Under Review" ? 'text-yellow-500' : 'text-blue-500'}`}>{application.status}</span>
                 <span className="flex-1 text-left text-blue-500">{`${calculateReady(application.score)}/5`}</span>

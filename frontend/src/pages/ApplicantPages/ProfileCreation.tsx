@@ -4,12 +4,11 @@ import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Logo from "../../components/Logo";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type FormFields = {
   resume: string;
   name: string;
-  //email: string;
   phoneNumber: string;
   city: string;
   header: string;
@@ -21,11 +20,9 @@ type FormFields = {
 
 const CandidateProfile = () =>{
 
-  const location = useLocation();
-
-  // Extract query parameters from the URL
-  const queryParams = new URLSearchParams(location.search);
-  const email = queryParams.get('email') || '';
+  const email = sessionStorage.getItem('email');
+  console.log(email);
+  const navigate = useNavigate();
 
   const inputClassnames = "py-2 border-[1px] border-gray-300 rounded-md placeholder:text-sm text-sm px-2 focus:border-black focus:outline-none mt-1 w-full mb-1";
 
@@ -45,7 +42,7 @@ const CandidateProfile = () =>{
   const { 
     register, 
     handleSubmit, 
-    formState:{errors},
+    formState:{errors, isSubmitting},
     setValue,
     getValues
   } = useForm<FormFields>();
@@ -59,7 +56,6 @@ const CandidateProfile = () =>{
         data.job_title_3,
       ].filter(Boolean); // Remove any empty or undefined values
 
-      // Update the data object to include the interestedRoles array
       const updatedData = {
         name: getValues('name'),
         phoneNumber: getValues('phoneNumber'),
@@ -82,8 +78,13 @@ const CandidateProfile = () =>{
       //console.log(data);
       if(!(response.status == 201))
         throw new Error(response.data.message);
-      else 
-        toast.success("Profile created successfully.")
+      else {
+        const applicantId = response.data;
+        console.log(applicantId);
+        sessionStorage.setItem('applicantId', applicantId); 
+        toast.success("Profile created successfully.");
+        navigate('/jobs');
+      }
     } catch (e) {
       toast.error(e + ". Try again later.");
     }
@@ -224,9 +225,12 @@ const CandidateProfile = () =>{
             />
             {errors.job_title_1 && <div className="mt-1 text-error text-sm text-left mb-2">{errors.job_title_1.message}</div>}
 
-            <button type="submit" className={`${buttonClassnames} px-10 py-3 text-md font-semibold rounded-full w-full mt-5`}>
-              Continue <IoArrowForward className="text-md ml-2"/>
-            </button>
+            <input 
+              type="submit" 
+              className={`${buttonClassnames} px-10 py-3 text-md font-semibold rounded-full w-full mt-5`}
+              value={isSubmitting ? 'Creating Profile..' : `Continue`}
+              />
+            
           </form>
         </div>
         <Toaster position="bottom-center"/>

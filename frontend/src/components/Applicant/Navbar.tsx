@@ -1,38 +1,78 @@
-import { Link } from "react-router-dom";
-import logo from '../../assets/main-logo.png'
+import { IoIosMenu,IoMdClose } from "react-icons/io";
+import { useState } from 'react';
+import logo from '../../assets/main-logo.png';
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-
-  const nav_links = "text-white flex items-center py-2 px-4 h-full text-base my-1 mx-0 hover:border-b-[3px] hover:border-b-white hover:transition-all hover:duration-500 hover:ease-out";
+  const [toggle, setToggle] = useState(false);
+  const navLinks = [
+    {
+      link: "/user/jobs",
+      title: "find jobs"
+    },
+    {
+      link: "/user/saved",
+      title: "saved jobs"
+    },
+    {
+      link: "/user/myapplications",
+      title: "my applications"
+    },
+    {
+      link: "/user/myprofile",
+      title: "my profile"
+    }
+  ];
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
-    <>
-      <nav className="navbar bg-primary flex items-center text-lg top-0 z-[999] w-full h-24">
-        <div className="navbar-container text-white relative flex float-left flex-1 items-center min-h-28 w-fit font-secondary text-sm">
-          <Link to="/" className="navbar-logo text-white items-center flex">
-            <img src={logo} alt="Logo" className="w-16 h-16 justify-end my-0 mx-5 border-2 rounded-full border-white"/>
-          </Link>
-        </div>
+    <nav className='w-full flex z-[999] shadow-lg fixed top-0 py-6 justify-between items-center navbar bg-black mb-10 lg:mb-2 h-[65px] lg:h-[75px] text-white'>
 
-        <div className="menu-icon">
-          {/* <Sidebar outerContainerId={'menu-icon'} /> */}
-        </div>
-        <ul className="nav-menu flex list-none text-enter h-[120px] w-fit items-center justify-evenly pr-10">
-          <li className="nav-item h-10 mx-auto my-0">
-            <Link to="/jobs" className={nav_links}>
-              Jobs
-            </Link>
-          </li>
+      <div className="flex justify-start items-center">
+        <img src={logo} alt='Logo' width='20' height='20' className='w-[28px] h-[28px] lg:w-[50px] lg:h-[50px] ml-5 lg:ml-10 border-2 rounded-full border-white mr-2'/>
+        <h1 className={`text-white origin-left font-semibold text-sm lg:text-2xl`}>Recruit<span className="text-primary">Ease</span></h1>
+      </div>
 
-          <li className="nav-item h-10 mx-auto my-0">
-            <Link to="/profile" className={nav_links}>
-              Profile
-            </Link>
-          </li>
+        {/* desktop navbar */}
+        <ul className='list-none sm:flex max-md:hidden justify-end items-center flex-1'>
+          {navLinks.map( (nav,index) => (
+              <li
+                key={nav.link}
+                onClick={ () => navigate(nav.link)}
+                className={`font-secondary font-semibold cursor-pointer text-sm md:text-base lg:text-[18px]
+                ${index===navLinks.length-1 ? `mr-10 lg:mr-20`: `mr-10`} ${location.pathname === nav.link ? 'border-b-[3px] border-b-white' : ''} hover:transition-all hover:duration-500 hover:ease-in-out py-2 transform transition-transform duration-300 hover:scale-105`}
+              >
+                {nav.title}
+              </li>
+          ))}
         </ul>
-      </nav>
-    </>
-  );
+
+        {/* mobile navbar */}
+        <div className='sm:hidden flex flex-1 justify-end items-center'>
+          <span onClick={() => setToggle( (prev) => !prev)}>
+            {toggle 
+              ? <IoMdClose className='w-[28px] h-[28px] mr-5'/>
+              : <IoIosMenu className='w-[28px] h-[28px] mr-5'/>
+            }
+          </span>
+          <div className={`${toggle ? `flex` : `hidden`} p-6 bg-black absolute top-20 right-0 mx-4 my-2 min-w[140px] rounded-xl sidebar`}>
+            <ul className='list-none flex flex-col justify-start items-start flex-1'>
+              {navLinks.map( (nav,index) => (
+                <Link  to={nav.link} className='py-2 px-3 hover:text-white hover:bg-slate-900 rounded-md text-white'>
+                  <li
+                    key={nav.link}
+                    className={`block font-secondary font-semibold cursor-pointer text-[18px]
+                    ${index===navLinks.length-1 ? `mb-5`: `mb-5`}`}
+                  >{nav.title}
+                  </li>
+                </Link>
+                ))}
+            </ul>
+          </div>
+        </div>
+    </nav>
+  )
 }
 
-export default Navbar;
+export default Navbar

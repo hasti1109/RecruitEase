@@ -30,12 +30,20 @@ const SignUp = () => {
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       if(getValues('password')===getValues('confirmPassword')){
-        const response= await axios.post("http://localhost:5000/api/auth/signup",data);
+        const response= await axios.post("http://localhost:5000/api/auth/signup",data,{
+          validateStatus: (status) => {
+            return status < 500;
+          }
+        });
         //console.log(data);
         if(response.status == 201){
-          toast.success("Signed up sucecssfully! Going to profile page...");
+          toast.success("Signed up succesfully! Going to profile page...");
           await new Promise((resolve) => setTimeout(resolve, 1000));
-          navigate(`/profile-creation?email=${data.email}`);
+          sessionStorage.setItem('email', data.email);
+          navigate(`/profile-creation`);
+        }
+        else if(response.status == 409){
+          throw new Error(response.data.message + ". Please login instead.")
         }
         else{
           throw new Error(response.data.message);
@@ -46,7 +54,7 @@ const SignUp = () => {
       }
       
     } catch (e) {
-      toast.error(e + ".Try again later.");
+      toast.error(e+'');
     }
   }
 
@@ -148,7 +156,7 @@ const SignUp = () => {
                   </div>
 
                   <div className="flex w-full justify-center text-sm text-gray-600 mt-3">
-                    Already have an account?<Link to="/login" replace className="ml-2 text-blue-500 font-semibold cursor-pointer">Sign In</Link>
+                    Already have an account?<Link to="/" replace className="ml-2 text-blue-500 font-semibold cursor-pointer">Sign In</Link>
                   </div>
 
                 </form>

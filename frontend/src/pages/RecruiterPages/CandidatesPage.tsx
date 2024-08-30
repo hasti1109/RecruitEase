@@ -122,7 +122,7 @@ const CandidatesPage = () => {
               ))}
             </div>
           ) : (
-            !loading && <p className="py-2 text-center mt-10 font-semibold text-lg text-primary">No applicants available for the filter.</p>
+            !loading && <p className="py-2 text-center mt-10 font-semibold text-lg text-error">No applicants available for the filter.</p>
           )}
         </div>
 

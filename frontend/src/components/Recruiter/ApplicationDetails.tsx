@@ -59,7 +59,7 @@ const ApplicationDetails: React.FC<ApplicationProps> = ({job}) => {
     fetchApplications();
   }, [job._id]);
 
-  const titles = ['Name', 'Score', 'Status', 'Resume'];
+  const titles = ['Name', 'Score', 'Resume', 'Status'];
 
   return (
     <>
@@ -88,7 +88,7 @@ const ApplicationDetails: React.FC<ApplicationProps> = ({job}) => {
           )}
         </div>
       ) : (
-        <p className="py-2 text-center mt-10 font-semibold text-md text-error">No applications available for job.</p>
+        <p className="py-2 text-center mt-10 font-semibold text-md text-error">No applications yet for this job.</p>
       )}
     </>
   )

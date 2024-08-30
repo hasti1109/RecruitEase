@@ -19,6 +19,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/jobs', require('./routes/jobRoutes'));
 app.use('/api/applicants', require('./routes/applicantRoutes'));
 app.use('/api/applications', require('./routes/applicationRoutes'));
+app.use('/api/recruiter', require('./routes/recruiterRoutes'));
 
 app.listen(PORT, () => {
   console.log(`Server started on port : ${PORT}`);

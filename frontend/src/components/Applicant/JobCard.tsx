@@ -24,11 +24,11 @@ const JobCard: React.FC<JobCardProps> = ({job,index}) => {
   const navigate = useNavigate();
 
   const onDetailsClick = () => {
-    navigate(`/jobs/${job._id}`, {state: job});
+    navigate(`/user/jobs/${job._id}`, {state: job});
   };
 
   return (
-    <div className="w-64 h-fit p-[6px] text-black border border-slate-300 rounded-2xl">
+    <div className="w-64 h-fit p-[6px] text-black border border-slate-300 rounded-2xl transform transition-transform duration-300 hover:scale-105 cursor-pointer">
       <div className={`p-3 ${bgColors[(index)%bgColors.length]} flex flex-col rounded-xl`}>
         {/* date and save option */}
         <div className="flex flex-row justify-between items-center ">

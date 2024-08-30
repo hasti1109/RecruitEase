@@ -45,6 +45,17 @@ const createRecruiter = asyncHandler(async(req,res) => {
   return res.status(201).json(createdRecruiter);
 });
 
+//@desc get all recruiters
+//@route GET /api/recruiter
+const getRecruiters = asyncHandler(async(req,res) => {
+  const recruiters = await Recruiter.find();
+  if (recruiters.length == 0){
+    res.status(404).json({message:'No recruiters exist.'})
+    return
+  }
+  res.status(200).json(recruiters);
+});
+
 //@desc Delete recruiter
 //@route Delete /api/recruiter/:id
 const deleteRecruiter = asyncHandler(async(req,res) => {
@@ -61,4 +72,4 @@ const deleteRecruiter = asyncHandler(async(req,res) => {
   }
 });
 
-module.exports = {recruiterLogin, createRecruiter, deleteRecruiter};
+module.exports = {getRecruiters, recruiterLogin, createRecruiter, deleteRecruiter};

@@ -2,6 +2,8 @@ const asyncHandler = require('express-async-handler');
 const Applicant = require('../models/applicant');
 const Job = require('../models/job')
 const {ObjectId} = require('mongodb');
+const multer = require('multer');
+const { upload } = require('../middleware/fileUpload');
 
 //@desc Get all applicants
 //@route GET /api/applicants
@@ -17,48 +19,54 @@ const getApplicants = asyncHandler(async (req,res) => {
 //@desc Create an applicant
 //@route POST /api/applicants
 const createApplicant = asyncHandler(async (req, res) => {
-  const { name, email, phoneNumber, city, header, description, resume, interestedRoles } = req.body;
+  // Upload the resume file using multer
+  upload.single('resume')(req, res, async (err) => {
+    if (err) {
+      return res.status(503).json({ message: err.message });
+    }
 
-  // Validate required fields
-  if (!name || !email || !phoneNumber || !city || !resume || !interestedRoles || !header || !description) {
-    console.log(name, email, phoneNumber, city, header, description, resume, interestedRoles)
-    return res.status(400).json({ message: 'Please fill all the required fields.' });
-  }
+    const { name, email, phoneNumber, city, header, description, interestedRoles } = req.body;
 
-  // Check if the applicant email already exists
-  const existingApplicant = await Applicant.findOne({ email });
+    // Check for all required fields
+    if (!name || !email || !phoneNumber || !city || !header || !description || !interestedRoles || !req.file) {
+      console.log(name, email, phoneNumber, city, header, description, req.file?.path, interestedRoles);
+      return res.status(400).json({ message: 'Please fill all the required fields.' });
+    }
 
-  if (existingApplicant) {
-    // Update existing applicant
-    existingApplicant.name = name;
-    existingApplicant.phoneNumber = phoneNumber;
-    existingApplicant.city = city;
-    existingApplicant.header = header;
-    existingApplicant.description = description;
-    existingApplicant.resume = resume;
-    existingApplicant.interestedRoles = interestedRoles;
+    const existingApplicant = await Applicant.findOne({ email });
 
-    const updatedApplicant = await existingApplicant.save();
+    if (existingApplicant) {
+      // Update the existing applicant's details
+      existingApplicant.name = name;
+      existingApplicant.phoneNumber = phoneNumber;
+      existingApplicant.city = city;
+      existingApplicant.header = header;
+      existingApplicant.description = description;
+      existingApplicant.resume = req.file.path;
+      existingApplicant.interestedRoles = interestedRoles;
 
-    return res.status(201).json(updatedApplicant._id);
-  } else {
-    const applicant = new Applicant({
-      name,
-      email,
-      phoneNumber,
-      city,
-      header,
-      description,
-      resume,
-      interestedRoles,
-      status: 'not applied',
-    });
+      const updatedApplicant = await existingApplicant.save();
+      return res.status(200).json(updatedApplicant._id);
+    } else {
+      // Create a new applicant
+      const applicant = new Applicant({
+        name,
+        email,
+        phoneNumber,
+        city,
+        header,
+        description,
+        resume: req.file.path, 
+        interestedRoles,
+        status: 'not applied',
+      });
 
-    const createdApplicant = await applicant.save();
-    console.log(createdApplicant);
-    return res.status(201).json(createdApplicant._id);
-  }
+      const createdApplicant = await applicant.save();
+      return res.status(201).json(createdApplicant._id);
+    }
+  });
 });
+
 
 //@desc Get one applicant
 //@route GET /api/applicants/:id

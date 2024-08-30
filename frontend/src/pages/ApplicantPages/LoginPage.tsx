@@ -12,6 +12,7 @@ type FormFields = {
   password: string;
 }
 
+
 const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
@@ -20,8 +21,6 @@ const Login = () => {
   const { 
     register, 
     handleSubmit, 
-    setError,
-    getValues,
     formState: { errors, isSubmitting } 
   } = useForm<FormFields>({
     defaultValues:{
@@ -40,8 +39,11 @@ const Login = () => {
       if(response.status === 200){
         toast.success('Login successful.');
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        const applicantData = response.data.existingUser;
-        navigate('/homepage', { state: applicantData });
+        const applicantId = response.data.userId;
+        console.log(response.data.userId);
+        sessionStorage.setItem('applicantId', applicantId);
+        console.log('session:', sessionStorage.getItem('applicantId'));
+        navigate('/user/jobs', { state: applicantId });
       }
       else{
         throw new Error(response.data.message);

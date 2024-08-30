@@ -5,8 +5,11 @@ import CandidateProfile from './pages/ApplicantPages/ProfileCreation';
 import RecruiterLogin from './pages/RecruiterPages/RecruiterLogin';
 import HomePage from './pages/RecruiterPages/HomePage';
 import ErrorPage from './pages/ErrorPage';
-import {HomePage as ApplicantHomePage} from './pages/ApplicantPages/HomePage'
+import  ApplicantHomePage from './pages/ApplicantPages/ApplicantHomePage';
 import JobDetailsPage from './pages/ApplicantPages/JobDetailsPage';
+import MyApplicationsPage from './pages/ApplicantPages/MyApplicationsPage';
+import SavedJobsPage from './pages/ApplicantPages/SavedJobsPage';
+import MyProfilePage from './pages/ApplicantPages/MyProfilePage';
 
 function App() {
   return (
@@ -17,8 +20,7 @@ function App() {
           <Route path='/profile-creation' element={<CandidateProfile/>}/>
           <Route path='/recruiter-login' element={<RecruiterLogin/>}/>
           <Route path='/home/*' element={<HomePage/>}/>
-          <Route path='/homepage' element={<ApplicantHomePage/>}/>
-          <Route path='/jobs/:id' element={<JobDetailsPage/>}/>
+          <Route path='/user/*' element={<ApplicantHomePage/>}/>
           <Route path='*' element={<ErrorPage/>}/>
       </Routes>
     </BrowserRouter>

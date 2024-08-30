@@ -15,22 +15,47 @@ const calculateScore = (resumeKeywords, jobDescriptionKeywords) => {
     }
   });
 
-  // Optionally, normalize the score based on the number of keywords in the job description
+  // Normalize the score based on the number of keywords in the job description
   score = (score / jobDescriptionKeywords.length) * 100; // Percentage-based score
-  console.log(typeof(score));
+
+  // Round the score to 2 decimal places
+  score = parseFloat(score.toFixed(2));
+  
+  console.log(typeof(score)); // Output should be 'number'
   return score;
 };
 
 //@desc Get all applications
 //@route GET /api/applications
-const getApplications = asyncHandler(async (req,res) => {
-  const applications = await Application.find();
-  if (applications.length == 0){
-    res.status(404).json({message:'No applications exist.'})
-    return
+const getApplications = asyncHandler(async (req, res) => {
+  const applications = await Application.find()
+    .populate('applicant', 'name') // Populate the 'applicant' field and include only the 'name'
+    .populate('jobPosition', 'title'); // Populate the 'jobPosition' field and include only the 'title'
+
+  if (applications.length == 0) {
+    res.status(404).json({ message: 'No applications exist.' });
+    return;
   }
+
   res.status(200).json(applications);
 });
+
+//@desc Get all applications of an applicant
+//@route GET /api/applications/applicant/:id
+const getApplicationsofApplicant = asyncHandler(async (req, res) => {
+  const applicantId = req.params.id;
+
+  const applications = await Application.find({ applicant: applicantId })
+    .populate('jobPosition', '_id title noOfApplicants'); 
+
+  if (applications.length === 0) {
+    res.status(404).json({ message: 'No applications found for the given applicant.' });
+    return;
+  }
+
+  res.status(200).json(applications);
+});
+
 
 //@desc Create an application
 //@route POST /api/applications
@@ -43,16 +68,19 @@ const createApplication = asyncHandler(async (req, res) => {
     return;
   }
 
+  console.log(applicant,jobPosition);
+
   // Check if the applicant and job exist
   const applicantExists = await Applicant.findById(applicant);
   const jobExists = await Job.findById(jobPosition);
+  console.log(applicantExists, jobExists);
 
   if (!applicantExists || !jobExists) {
     res.status(404);
     throw new Error('Applicant or Job not found');
   }
 
-  const jobKeywords = jobExists.keywords;
+  const jobKeywords = jobExists.keywords || ['abc'];
   const score = calculateScore(keywords, jobKeywords);
 
   const application = new Application({
@@ -81,6 +109,51 @@ const createApplication = asyncHandler(async (req, res) => {
   await applicantExists.save();
 
   res.status(201).json({message: "application added successfully", createdApplication, jobExists, applicantExists});
+});
+
+// @desc Delete n application
+//@route DELETE /api/applications/:id
+const deleteApplication = asyncHandler(async (req, res) => {
+  const  applicationId  = req.params.id;
+
+  if (!applicationId) {
+    res.status(400).json({ message: 'Application ID is required.' });
+    return;
+  }
+  const application = await Application.findById(applicationId);
+
+  if (!application) {
+    res.status(404).json({ message: 'Application not found.' });
+    return;
+  }
+
+  // Find the related job and applicant
+  const job = await Job.findById(application.jobPosition);
+  const applicant = await Applicant.findById(application.applicant);
+
+  if (!job || !applicant) {
+    res.status(404).json({ message: 'Job or Applicant not found.' });
+    return;
+  }
+
+  // Remove the application reference from the job
+  job.applications = job.applications.filter(
+    (appId) => appId.toString() !== applicationId
+  );
+  job.noOfApplicants -= 1;
+  await job.save();
+
+  // // Update the applicant's status and applied positions
+  // applicant.status = 'not applied'; // Or adjust based on your requirements
+  applicant.appliedPositions = applicant.appliedPositions.filter(
+    (jobId) => jobId.toString() !== application.jobPosition.toString()
+  );
+  await applicant.save();
+
+  // Delete the application
+  await Application.findByIdAndDelete(applicationId);
+
+  res.status(200).json({ message: 'Application deleted successfully' });
 });
 
 //@desc Get one application
@@ -127,4 +200,4 @@ const getApplicant = asyncHandler(async (req,res) => {
   }
 });
 
-module.exports = {getApplication, getApplications, createApplication, getApplicant}
+module.exports = {getApplication, getApplications, createApplication, getApplicant, getApplicationsofApplicant, deleteApplication}

@@ -1,4 +1,6 @@
+import axios from "axios";
 import React, { useState, ChangeEvent, MouseEvent } from "react";
+import toast, {Toaster} from "react-hot-toast";
 import { IoEye, IoEyeOff, IoKey, IoPerson } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
@@ -9,16 +11,22 @@ const RecruiterLogin = () => {
   const [isValid, setIsValid] = useState<boolean>(true);
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevent the default form submission
-
-    // Check if the credentials are correct
-    if (username === 'test123' && password === 'test123') {
-      // Redirect to /home if credentials are valid
-      navigate('/home');
-    } else {
-      // Set validation state to false and show error message
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = {
+      username,
+      password
+    }
+    try {
+      const response = await axios.post('http://localhost:5000/api/recruiter/login', data);
+      if(response.status === 200){
+        const recruiterId = response.data;
+        sessionStorage.setItem('recruiterId', recruiterId);
+        navigate('/home');
+      }
+    } catch (error) {
       setIsValid(false);
+      toast.error(error + ". Try again later.")
     }
   };
 
@@ -98,6 +106,7 @@ const RecruiterLogin = () => {
             </div>
           </div>
         </div>
+        <Toaster position="bottom-center"/>
       </main>
     </div>
   );

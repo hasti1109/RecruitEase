@@ -103,7 +103,7 @@ export const JobsPage = () => {
 
       {/* all jobs and filtered jobs */}
       <div className='w-full md:w-4/5'>
-        <h1 className='font-semibold text-black mt-5 md:mt-24 py-0 px-10 text-lg md:text-3xl flex '>Recommended Jobs for {applicant?.name || 'Loading...'}
+        <h1 className='font-semibold text-black mt-5 md:mt-24 py-0 px-10 text-lg md:text-3xl flex '>Recommended Jobs for {'Hasti' || 'Loading...'}
           <span className='bg-transparent font-semibold text-sm  text-black border border-slate-400 px-3 py-2 rounded-full ml-3'>{filteredJobs.length}</span>
         </h1>
         <div className='min-w-max px-5 md:px-8 lg:px-5 py-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-rows-2 gap-y-3 gap-x-5 mx-5 md:mx-0'>

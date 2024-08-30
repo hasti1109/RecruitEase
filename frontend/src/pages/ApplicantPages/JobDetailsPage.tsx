@@ -81,8 +81,8 @@ const JobDetailsPage = () => {
   return (
     <div>
       <Navbar2/>
-      <div className=" flex justify-center items-center my-10 mx-5 md:mx-20 lg:mx-0">
-        <div className="w-full mx-2 lg:w-3/5 border border-slate-300 rounded-xl mt-20 px-8 py-6 my-0">
+      <div className="min-h-screen bg-slate-100 flex justify-center items-center my-10 mx-5 md:mx-20 lg:mx-0">
+        <div className="w-full mx-2 lg:w-3/5 border border-slate-300 rounded-xl mt-20 px-8 py-6 my-0 bg-white">
           <h1 className="text-2xl md:text-3xl font-semibold text-black">{job.title}</h1>
 
           {/* location */}

@@ -61,6 +61,10 @@ const ApplicationDetails: React.FC<ApplicationProps> = ({job}) => {
 
   const titles = ['Name', 'Score', 'Resume', 'Status'];
 
+  const showPdf = (pdf:String|undefined) => {
+    window.open(`http://localhost:5000/${pdf}`, "_blank", "noreferrer");
+  }
+
   return (
     <>
       {applications.length > 0 ? (
@@ -80,7 +84,7 @@ const ApplicationDetails: React.FC<ApplicationProps> = ({job}) => {
                 <div key={index} className="flex justify-around gap-x-5 py-2 border-b border-slate-300 cursor-pointer pl-3 text-sm">
                   <span className="flex-1 text-left">{application.applicant?.name || 'Fetching...'}</span>
                   <span className="flex-1 text-left text-gray-500">{application.score.toString()}</span>
-                  <span className="flex-1 text-left text-blue-500 cursor-pointer">{application.resume}</span>
+                  <span className="flex-1 text-left text-blue-500 cursor-pointer" onClick={()=>showPdf(application.resume)}>View</span>
                   <span className={`flex-1 font-semibold text-left ${application.status=="Accepted" ? 'text-green-500' : application.status=="rejected" ? 'text-red-500' : application.status=="Under Review" ? 'text-yellow-500' : 'text-blue-500'}`}>{application.status}</span>
                 </div>
               ))}

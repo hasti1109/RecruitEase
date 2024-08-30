@@ -18,7 +18,7 @@ const RecruiterLogin = () => {
       password
     }
     try {
-      const response = await axios.post('http://localhost:5000/api/recruiter/login', data);
+      const response = await axios.post('http://localhost:5000/api/recruiters/login', data);
       if(response.status === 200){
         const recruiterId = response.data;
         sessionStorage.setItem('recruiterId', recruiterId);

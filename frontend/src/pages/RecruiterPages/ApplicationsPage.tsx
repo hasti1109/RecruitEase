@@ -42,7 +42,11 @@ const ApplicationsPage = () => {
     score > 60 ? 2 :
     1;
 
-  const titles = ['Name', 'Job', 'Reusme', 'Status', 'Ready', 'Score'];
+  const titles = ['Name', 'Applied for', 'Resume', 'Status', 'Ready', 'Score'];
+
+  const showPdf = (pdf:String|undefined) => {
+    window.open(`http://localhost:5000/${pdf}`, "_blank", "noreferrer");
+  }
 
   return (
     <div className='p-4 flex-col flex-grow overflow-y-auto  min-h-screen bg-slate-100 w-full m-0 md:px-10'>
@@ -52,7 +56,7 @@ const ApplicationsPage = () => {
       </div>
 
       {/* all applications */}
-      <div className='w-full border rounded-md border-slate-300 ml-2 mt-6 md:mt-0'>
+      <div className='w-full border rounded-md border-slate-300 ml-2 mt-6 md:mt-10'>
         {/* Items header */}
         {applications.length > 0 ? (
           <div className="flex w-full justify-around gap-x-5 py-2 text-sm border-b border-slate-300 bg-slate-300 pl-3">
@@ -67,15 +71,15 @@ const ApplicationsPage = () => {
         {loading && <p className="py-2">Loading jobs...</p>}
         {error && <p className="text-red-500 py-2">Error: {error}</p>}
         {applications.length > 0 ? (
-          <div className="flex flex-col">
+          <div className="flex flex-col bg-white">
             {applications.map((application, index) => (
               <div key={index} className="flex justify-around gap-x-5 py-2 border-b border-slate-300 cursor-pointer pl-3 text-sm">
                 <span className="flex-1 text-left">{application.applicant.name || 'Fetching...'}</span>
                 <span className="flex-1 text-left">{application.jobPosition.title || 'Fetching...'}</span>
-                <span className="flex-1 text-left cursor-pointer text-blue-500 underline">{application.resume}</span>
+                <span className="flex-1 text-left cursor-pointer text-blue-500" onClick={() => showPdf(application.resume)}>View</span>
                 <span className={`flex-1 font-semibold text-left ${application.status=="Accepted" ? 'text-green-500' : application.status=="rejected" ? 'text-red-500' : application.status=="Under Review" ? 'text-yellow-500' : 'text-blue-500'}`}>{application.status}</span>
-                <span className="flex-1 text-left text-blue-500">{`${calculateReady(application.score)}/5`}</span>
-                <span className="flex-1 text-left text-blue-500">{application.score.toString()}%</span>
+                <span className="flex-1 text-left ">{`${calculateReady(application.score)}/5`}</span>
+                <span className="flex-1 text-left">{application.score.toString()}%</span>
               </div>
             ))}
           </div>

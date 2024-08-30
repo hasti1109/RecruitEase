@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { IoCloudUploadOutline, IoArrowForward } from "react-icons/io5";
+import { IoCloudUploadOutline } from "react-icons/io5";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Logo from "../../components/Logo";
@@ -7,10 +7,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 type FormFields = {
-  resume: string;
+  resume: File | null;
   name: string;
   phoneNumber: string;
   city: string;
+  email: string;
   header: string;
   description: string;
   job_title_1: string;
@@ -30,65 +31,73 @@ const CandidateProfile = () =>{
 
   const [fileName, setFileName] = useState<string>('Choose File');
 
+  const [file, setFile] = useState<File | null>(null); // Add this state
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileInput = event.target;
-    const selectedFileName = fileInput.files && fileInput.files.length > 0
-      ? fileInput.files[0].name
-      : 'Choose File';
-    setFileName(selectedFileName);
-    setValue('resume', selectedFileName);
+    if (fileInput.files && fileInput.files.length > 0) {
+      const selectedFile = fileInput.files[0];
+      setFile(selectedFile); // Store the File object
+      setFileName(selectedFile.name);
+      // setValue('resume', selectedFile.name); // If you need to store the name separately
+    } else {
+      setFileName('Choose File');
+      setFile(null); // Reset if no file selected
+    }
   };
 
   const { 
     register, 
     handleSubmit, 
     formState:{errors, isSubmitting},
-    setValue,
-    getValues
   } = useForm<FormFields>();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      // Combine job titles into an array
       const interestedRoles = [
         data.job_title_1,
         data.job_title_2,
         data.job_title_3,
-      ].filter(Boolean); // Remove any empty or undefined values
+      ].filter(Boolean); 
 
-      const updatedData = {
-        name: getValues('name'),
-        phoneNumber: getValues('phoneNumber'),
-        city: getValues('city'),
-        header: getValues('header'),
-        description: getValues('description'),
-        interestedRoles,
-        email,
-        resume: fileName
-      };
-      console.log(updatedData);
-      //setValue('email', email);
+      // Create a FormData object to handle file upload
+      const formData = new FormData();
+      formData.append('name', data.name);
+      formData.append('phoneNumber', data.phoneNumber);
+      formData.append('city', data.city);
+      formData.append('header', data.header);
+      formData.append('description', data.description);
+      formData.append('email', email as string);
+      formData.append('resume', file as Blob); // Assuming fileName is the File object
+      interestedRoles.forEach(role => formData.append('interestedRoles[]', role)); // Append each role individually
+  
+      console.log("data to be sent:", formData);
+  
       const response = await axios.post(
         `http://localhost:5000/api/applicants`,
-        updatedData, 
-        { headers: {
-          'Content-Type': 'application/json',
-        }})
-      //await new Promise((resolve) => setTimeout(resolve, 1000));
-      //console.log(data);
-      if(!(response.status == 201))
-        throw new Error(response.data.message);
-      else {
+        formData, 
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data for file uploads
+          }
+        }
+      );
+  
+      if (response.status === 201 || response.status === 200) {
         const applicantId = response.data;
         console.log(applicantId);
         sessionStorage.setItem('applicantId', applicantId); 
         toast.success("Profile created successfully.");
-        navigate('/jobs');
+        navigate('/user/jobs');
+      }
+      else{
+        throw new Error(response.data.message);
       }
     } catch (e) {
       toast.error(e + ". Try again later.");
     }
   }
+  
 
   return(
     <div className="min-h-screen">

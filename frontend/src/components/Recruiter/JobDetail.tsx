@@ -105,8 +105,6 @@ const JobDetail: React.FC<JobCardProps> = ({
           />
         </div>
 
-        {/* view all applications */}
-        <button className="text-sm border-2 cursor-pointer border-primary rounded-full bg-primary text-white font-semibold hover:bg-white hover:text-primary hover:border-primary px-2 py-3 h-1/2">View all applications</button>
       </div>
 
     </div>

@@ -1,4 +1,3 @@
-const express = require('express');
 const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
 const Applicant = require('../models/applicant'); // Assuming you have a User model defined in models/User.js

@@ -7,6 +7,7 @@ const bcrypt = require('bcryptjs');
 //@route POST /api/recruiter/login
 const recruiterLogin = asyncHandler(async (req, res) => {
   const {username, password} = req.body;
+  console.log(username, password)
   if (!username || !password){
       return res.status(400).json({message : "Please enter username and password."});
   }

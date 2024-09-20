@@ -48,6 +48,10 @@ const applicantSchema = mongoose.Schema({
     type: [String],
     trim: true,
   },
+  savedJobs: {
+    type: [String],
+    trim: true, 
+  },
   status: {
     type: String,
     trim: true,

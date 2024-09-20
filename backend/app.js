@@ -9,8 +9,9 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:5173'
+  origin: true
 }));
+
 app.use('/files', express.static('files'));
 
 const connectToDb = require('./config/db');
@@ -20,7 +21,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/jobs', require('./routes/jobRoutes'));
 app.use('/api/applicants', require('./routes/applicantRoutes'));
 app.use('/api/applications', require('./routes/applicationRoutes'));
-app.use('/api/recruiters', require('./routes/recruiterRoutes'));
+app.use('/api/recruiter', require('./routes/recruiterRoutes'));
 
 app.listen(PORT, () => {
   console.log(`Server started on port : ${PORT}`);

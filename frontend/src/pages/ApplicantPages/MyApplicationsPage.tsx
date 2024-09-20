@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import Navbar2 from '../../components/Applicant/Navbar';
 
 type Application = {
   _id: String,
@@ -67,7 +66,7 @@ const MyApplicationsPage = () => {
           <p className="py-2 text-center mt-10 font-semibold text-md text-error">You have no applications yet.</p>
         )}
 
-      {loading && <p className="py-2">Loading jobs...</p>}
+      {loading && <p className="py-2 text-center">Loading applications...</p>}
       {error && <p className="text-red-500 py-2">Error: {error}</p>}
       {applications.length > 0 ? (
         <div className="flex flex-col">

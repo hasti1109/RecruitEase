@@ -24,13 +24,12 @@ const Login = () => {
     formState: { errors, isSubmitting } 
   } = useForm<FormFields>({
     defaultValues:{
-      email: "hastigabani1109@gmail.com", //get email from cookie?
+      email: "hastigabani1109@gmail.com", 
     }
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      //console.log(data);
       const response = await axios.post('http://localhost:5000/api/auth/login', data , {
         validateStatus: (status) => {
           return status < 500;
@@ -40,9 +39,7 @@ const Login = () => {
         toast.success('Login successful.');
         await new Promise((resolve) => setTimeout(resolve, 1000));
         const applicantId = response.data.userId;
-        console.log(response.data.userId);
         sessionStorage.setItem('applicantId', applicantId);
-        console.log('session:', sessionStorage.getItem('applicantId'));
         navigate('/user/jobs', { state: applicantId });
       }
       else{

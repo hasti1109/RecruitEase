@@ -107,7 +107,7 @@ const CandidateDetail = () => {
               {positions.map((position) => (
                 <div className="flex justify-between items-center">
                   <p className="mt-5">{position.title}</p>
-                  <p className="flex items-center"><IoLocation/>{position.location}</p>
+                  <p className="mt-5 flex items-center justify-center text-gray-600 gap-x-2"><IoLocation/>{position.location}</p>
                 </div>
               ))}
             </div>

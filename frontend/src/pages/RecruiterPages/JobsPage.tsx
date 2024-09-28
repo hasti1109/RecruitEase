@@ -121,7 +121,7 @@ const JobsPage = () => {
                 selectedJob ? (
                   <>
                     <div className='mb-2 p-2 flex justify-between items-center border-t-2'>
-                      <h1 className='md:text-xl font-semibold text-gray-700'>{selectedJob.title}</h1>
+                      <h1 className='md:text-xl font-semibold text-gray-700 px-5 pt-2'>{selectedJob.title}</h1>
                       <span className='text-xs md:text-sm font-semibold text-gray-500 flex items-center'>{selectedJob.location}<IoLocationOutline/></span>
                     </div>
                   <ApplicationDetails job = {selectedJob}/>

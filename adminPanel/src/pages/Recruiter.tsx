@@ -18,7 +18,7 @@ const Recruiters = () => {
   useEffect(() => {
     const fetchRecruiters = async () => {
       try {
-        const response = await axios.get<Recruiter[]>('http://localhost:5000/api/recruiters');
+        const response = await axios.get<Recruiter[]>('http://localhost:5000/api/recruiter');
         setRecruiters(response.data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred');
@@ -32,7 +32,7 @@ const Recruiters = () => {
 
   const handleCreateRecruiter = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/api/recruiters', newRecruiter);
+      const response = await axios.post('http://localhost:5000/api/recruiter', newRecruiter);
       setRecruiters([...recruiters, response.data]);
       setShowCreateDialog(false);
       setNewRecruiter({ name: "", username: "", password: "" });
@@ -43,7 +43,7 @@ const Recruiters = () => {
 
   const handleDeleteRecruiter = async (recruiterId: string) => {
     try {
-      await axios.delete(`http://localhost:5000/api/recruiters/${recruiterId}`);
+      await axios.delete(`http://localhost:5000/api/recruiter/${recruiterId}`);
       setRecruiters(recruiters.filter((recruiter) => recruiter._id !== recruiterId));
       setShowDeleteDialog(null);
     } catch (err) {

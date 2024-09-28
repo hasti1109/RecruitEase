@@ -46,11 +46,7 @@ const CandidateProfile = () =>{
     }
   };
 
-  const { 
-    register, 
-    handleSubmit, 
-    formState:{errors, isSubmitting},
-  } = useForm<FormFields>();
+  const {  register, handleSubmit, formState:{errors, isSubmitting}} = useForm<FormFields>();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
@@ -68,24 +64,17 @@ const CandidateProfile = () =>{
       formData.append('header', data.header);
       formData.append('description', data.description);
       formData.append('email', email as string);
-      formData.append('resume', file as Blob); // Assuming fileName is the File object
-      interestedRoles.forEach(role => formData.append('interestedRoles[]', role)); // Append each role individually
-  
-      console.log("data to be sent:", formData);
+      formData.append('resume', file as Blob); 
+      interestedRoles.forEach(role => formData.append('interestedRoles[]', role));
   
       const response = await axios.post(
         `http://localhost:5000/api/applicants`,
         formData, 
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data for file uploads
-          }
-        }
+        {headers: {'Content-Type': 'multipart/form-data'}}
       );
   
       if (response.status === 201 || response.status === 200) {
         const applicantId = response.data;
-        console.log(applicantId);
         sessionStorage.setItem('applicantId', applicantId); 
         toast.success("Profile created successfully.");
         navigate('/user/jobs');

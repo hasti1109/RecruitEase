@@ -70,7 +70,6 @@ const Login = () => {
               <div className="flex flex-col items-center py-2 mt-5">
 
                 <form onSubmit={handleSubmit(onSubmit)}>
-
                   {/* email */}
                   <div className=" bg-gray-200 w-80 lg:py-4 sm:py-2 rounded-lg flex gap-x-2">
                     <IoMail className="text-lg text-gray-400 ml-2 mr-1"/>

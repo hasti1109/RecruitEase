@@ -20,7 +20,7 @@ const RecruiterSidebar = () => {
     // { title: "Log Out", src: <TbLogout />, gap: true, isLogout: true, path: '/logout' },
   ]
 
-  const titles = ["RECRUITEMENT", "ORGANIZATION", ""];
+  const titles = ["RECRUITMENT", "ORGANIZATION", ""];
 
   const navigate = useNavigate();
   const location = useLocation();

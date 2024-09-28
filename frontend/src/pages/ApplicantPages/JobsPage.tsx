@@ -106,23 +106,23 @@ export const JobsPage = () => {
           <span className='bg-transparent font-semibold text-sm  text-black border border-slate-400 px-3 py-2 rounded-full ml-3'>{filteredJobs.length}</span>
         </h1>
         <div className='min-w-max px-5 md:px-8 lg:px-5 py-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-rows-2 gap-y-3 gap-x-5 mx-5 md:mx-0'>
-        {loading && <p>Loading jobs...</p>}
-        {error && <p className="text-red-500">Error: {error}</p>}
-        {filteredJobs.length > 0 ? (
-          <>
-            {filteredJobs.map((job,index) => (
-              <JobCard
-                key={job._id}
-                index={index}
-                job={job}
-                applicantId={applicantId}
-              />
-            ))}
-          </>
-        ) : (
-          !loading && <p>No jobs available.</p>
-        )}
-      </div>
+          {loading && <p>Loading jobs...</p>}
+          {error && <p className="text-red-500">Error: {error}</p>}
+          {filteredJobs.length > 0 ? (
+            <>
+              {filteredJobs.map((job,index) => (
+                <JobCard
+                  key={job._id}
+                  index={index}
+                  job={job}
+                  applicantId={applicantId}
+                />
+              ))}
+            </>
+          ) : (
+            !loading && <p>No jobs available.</p>
+          )}
+        </div>
       </div>
     </div>
   )

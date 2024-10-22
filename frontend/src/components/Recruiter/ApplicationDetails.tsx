@@ -69,11 +69,10 @@ const ApplicationDetails: React.FC<ApplicationProps> = ({job}) => {
     window.open(`http://localhost:5000/${pdf}`, "_blank", "noreferrer");
   }
 
-  const handleApplicationClick = (applicant: Applicant) => {
-    // console.log(applicant);
-    // navigate(`/home/applications/${appli._id}`, {
-    //   state: { applicant }
-    // });
+  const handleApplicationClick = (applicationId: String) => {
+    navigate(`/home/applications/${applicationId}`, {
+      state: { applicationId }
+    });
   }
 
   const scoreRanges = [0, 20, 40, 60, 80, 100]; // Define the score ranges
@@ -140,7 +139,7 @@ const ApplicationDetails: React.FC<ApplicationProps> = ({job}) => {
             {applications.length > 0 && (
               <div className="flex flex-col">
                 {applications.map((application, index) => (
-                  <div key={index} className="flex justify-around gap-x-5 py-2 border-b border-slate-300 cursor-pointer pl-3 text-sm">
+                  <div key={index} className="flex justify-around gap-x-5 py-2 border-b border-slate-300 cursor-pointer pl-3 text-sm" onClick={() => handleApplicationClick(application._id)}>
                     <span className="flex-1 text-left">{application.applicant?.name || 'Fetching...'}</span>
                     <span className="flex-1 text-left text-gray-500">{application.score.toString()}</span>
                     <span className="flex-1 text-left text-blue-500 cursor-pointer" onClick={() => showPdf(application.resume)}>View</span>

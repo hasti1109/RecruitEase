@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type Application = {
   _id: String,
@@ -42,10 +43,18 @@ const ApplicationsPage = () => {
     score > 60 ? 2 :
     1;
 
-  const titles = ['Name', 'Applied for', 'Resume', 'Status', 'Ready', 'Score'];
+  const titles = ['Name', 'Applied for', 'Resume', 'Status', 'Score', 'Ready'];
 
   const showPdf = (pdf:String|undefined) => {
     window.open(`http://localhost:5000/${pdf}`, "_blank", "noreferrer");
+  }
+
+  const navigate = useNavigate();
+
+  const handleApplicationClick = (applicationId: String) => {
+    navigate(`/home/applications/${applicationId}`, {
+      state: { applicationId }
+    });
   }
 
   return (
@@ -73,13 +82,13 @@ const ApplicationsPage = () => {
         {applications.length > 0 ? (
           <div className="flex flex-col bg-white">
             {applications.map((application, index) => (
-              <div key={index} className="flex justify-around gap-x-5 py-2 border-b border-slate-300 cursor-pointer pl-3 text-sm">
+              <div key={index} className="flex justify-around gap-x-5 py-2 border-b border-slate-300 cursor-pointer pl-3 text-sm" onClick={ ()=> handleApplicationClick(application._id)}>
                 <span className="flex-1 text-left">{application.applicant.name || 'Fetching...'}</span>
                 <span className="flex-1 text-left">{application.jobPosition.title || 'Fetching...'}</span>
                 <span className="flex-1 text-left cursor-pointer text-blue-500" onClick={() => showPdf(application.resume)}>View</span>
                 <span className={`flex-1 font-semibold text-left ${application.status=="Accepted" ? 'text-green-500' : application.status=="rejected" ? 'text-red-500' : application.status=="Under Review" ? 'text-yellow-500' : 'text-blue-500'}`}>{application.status}</span>
-                <span className="flex-1 text-left ">{`${calculateReady(application.score)}/5`}</span>
                 <span className="flex-1 text-left">{application.score.toString()}%</span>
+                <span className={`flex-1 text-left ${calculateReady(application.score) >= 4 ? 'text-green-500 font-semibold' : 'text-black'}`}>{`${calculateReady(application.score)}/5`}</span>
               </div>
             ))}
           </div>

@@ -6,25 +6,25 @@ import RecruiterLogin from './pages/RecruiterPages/RecruiterLogin';
 import HomePage from './pages/RecruiterPages/HomePage';
 import ErrorPage from './pages/ErrorPage';
 import  ApplicantHomePage from './pages/ApplicantPages/ApplicantHomePage';
-import JobDetailsPage from './pages/ApplicantPages/JobDetailsPage';
-import MyApplicationsPage from './pages/ApplicantPages/MyApplicationsPage';
-import SavedJobsPage from './pages/ApplicantPages/SavedJobsPage';
-import MyProfilePage from './pages/ApplicantPages/MyProfilePage';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './context/ProtectedRoute';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-          <Route path='/' element={<Login/>}/>
-          <Route path='/signup' element={<SignUp/>}/>
-          <Route path='/profile-creation' element={<CandidateProfile/>}/>
-          <Route path='/recruiter-login' element={<RecruiterLogin/>}/>
-          <Route path='/home/*' element={<HomePage/>}/>
-          <Route path='/user/*' element={<ApplicantHomePage/>}/>
-          <Route path='*' element={<ErrorPage/>}/>
-      </Routes>
-    </BrowserRouter>
-  )
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/profile-creation" element={<CandidateProfile />} />
+          <Route path="/recruiter-login" element={<RecruiterLogin />} />
+          <Route path="/home/*" element={<ProtectedRoute element={<HomePage />} role="recruiter" />} />
+          <Route path="/user/*" element={<ProtectedRoute element={<ApplicantHomePage />} role="applicant" />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
 }
 
 export default App

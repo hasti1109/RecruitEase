@@ -80,8 +80,10 @@ const JobCard: React.FC<JobCardProps> = ({job,index,applicantId}) => {
       const response = await axios.put(`http://localhost:5000/api/applicants/removeJob`, data);
       console.log(response.status);
       if (response.status === 200) {
+        console.log("Job removed fro db")
         toast.success(response.data.message);
-        setIsJobSaved(false);   
+        setIsJobSaved(false); 
+        //navigate('/user/saved', {replace: true});  
       } 
       else{
         toast.error(response.data.message);

@@ -35,6 +35,7 @@ const CandidatesPage = () => {
         setApplicants(response.data);
         setFilteredApplicants(response.data);
         setLoading(false);
+        console.log(applicants)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred'); 
       }

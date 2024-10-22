@@ -8,6 +8,7 @@ import CandidateDetail from "../../components/Recruiter/CandidateDetail";
 import NotificationsPage from "./NotificationsPage";
 import InterviewsPage from "./InterviewsPage";
 import SettingsPage from "./SettingsPage";
+import ViewApplication from "./ViewApplication";
 
 const HomePage = () => {
   return (
@@ -19,6 +20,7 @@ const HomePage = () => {
           <Route path="candidates" element={<CandidatesPage />} />
           <Route path="candidates/:id" element={<CandidateDetail />} />
           <Route path="applications" element={<ApplicationsPage />} />
+          <Route path="applications/:id" element={<ViewApplication />} />
           <Route path="interviews" element={<InterviewsPage />} />
           <Route path="notifications" element={<NotificationsPage />} />
           <Route path="settings" element={<SettingsPage />} />

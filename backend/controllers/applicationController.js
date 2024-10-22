@@ -29,8 +29,8 @@ const calculateScore = (resumeKeywords, jobDescriptionKeywords) => {
 //@route GET /api/applications
 const getApplications = asyncHandler(async (req, res) => {
   const applications = await Application.find()
-    .populate('applicant', 'name') // Populate the 'applicant' field and include only the 'name'
-    .populate('jobPosition', 'title'); // Populate the 'jobPosition' field and include only the 'title'
+    .populate('applicant', 'name') 
+    .populate('jobPosition', 'title');
 
   if (applications.length == 0) {
     res.status(404).json({ message: 'No applications exist.' });
@@ -161,7 +161,11 @@ const deleteApplication = asyncHandler(async (req, res) => {
 const getApplication = asyncHandler(async (req,res) => {
   const applicationId = req.params.id;
   if(ObjectId.isValid(applicationId)){
-    const application = await Application.findById(applicationId);
+    const application = await Application.findById(applicationId)
+    .populate('applicant', 'name') 
+    .populate('jobPosition', 'title')
+    .populate('interviewSchedule', "interviewDate");
+    console.log(applicationId)
     if (!application){
       res.status(404).json({message:'Couldnt find application.'})
       return
@@ -200,4 +204,30 @@ const getApplicant = asyncHandler(async (req,res) => {
   }
 });
 
-module.exports = {getApplication, getApplications, createApplication, getApplicant, getApplicationsofApplicant, deleteApplication}
+//@desc Change application status
+//@route PUT /api/applications/changeStatus/:id
+const changeStatus = asyncHandler(async (req, res) => {
+  const  applicationId  = req.params.id;
+  const { status } = req.body;
+
+  if (!['Pending', 'Under review', 'Accepted', 'Rejected'].includes(status)) {
+    return res.status(400).json({ message: 'Invalid status' });
+  }
+
+  try {
+    const application = await Application.findById(applicationId);
+    if (!application) {
+      return res.status(404).json({ message: 'Application not found' });
+    }
+
+    application.status = status;
+    await application.save();
+
+    res.status(200).json({ message: 'Application status updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred while updating the status' });
+  }
+})
+
+module.exports = {getApplication, getApplications, createApplication, getApplicant, getApplicationsofApplicant, deleteApplication, changeStatus}

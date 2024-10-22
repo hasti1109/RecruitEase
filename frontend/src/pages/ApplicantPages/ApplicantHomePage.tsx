@@ -5,6 +5,7 @@ import { JobsPage } from "./JobsPage"
 import MyApplicationsPage from "./MyApplicationsPage"
 import MyProfilePage from "./MyProfilePage"
 import SavedJobsPage from "./SavedJobsPage"
+import ApplicationDetails from "./ApplicationDetails"
 
 const ApplicantHomePage = () => {
   return (
@@ -14,6 +15,7 @@ const ApplicantHomePage = () => {
         <Route path='jobs' element={<JobsPage/>}/>
         <Route path='jobs/:id' element={<JobDetailsPage/>}/>
         <Route path='myapplications' element={<MyApplicationsPage/>}/>
+        <Route path='myapplications/:id' element={<ApplicationDetails/>}/>
         <Route path='saved' element={<SavedJobsPage/>}/>
         <Route path='myprofile' element={<MyProfilePage/>}/>
       </Routes>

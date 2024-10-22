@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type Application = {
   _id: String,
@@ -23,6 +24,7 @@ const MyApplicationsPage = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [error, setError] = useState<string|null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -44,6 +46,10 @@ const MyApplicationsPage = () => {
 
     fetchApplications();
   }, []);
+
+  const handleApplicationClick = (applicationId: String) => {
+    navigate(`/user/myapplications/${applicationId}`, {state: applicationId});
+  }
 
   const titles = ['PROFILE', 'APPLIED ON', 'APPLICATION STATUS', 'NUMBER OF APPLICANTS']
 
@@ -71,7 +77,7 @@ const MyApplicationsPage = () => {
       {applications.length > 0 ? (
         <div className="flex flex-col">
           {applications.map((application, index) => (
-            <div key={index} className="flex justify-around gap-x-5 py-2 border-b border-slate-300 cursor-pointer pl-3 text-xs md:text-sm">
+            <div key={index} className="flex justify-around gap-x-5 py-2 border-b border-slate-300 cursor-pointer pl-3 text-xs md:text-sm" onClick={() => handleApplicationClick(application._id)}>
               <span className="flex-1 text-left">{application.jobPosition.title || 'Fetching...'}</span>
               <span className="flex-1 text-left">{new Date(application.timestamp).toLocaleDateString() || 'Fetching...'}</span>
               <span className={`flex-1 font-semibold text-left ${application.status=="Accepted" ? 'text-green-500' : application.status=="rejected" ? 'text-red-500' : application.status=="Under Review" ? 'text-yellow-500' : 'text-blue-500'}`}>{application.status}</span>

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react"
 import { IoPersonCircleOutline, IoCallSharp, IoMail, IoLocation } from "react-icons/io5"
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 type Applicant = {
   _id: string;
@@ -16,6 +17,8 @@ type Applicant = {
 }
 
 const MyProfilePage = () => {
+
+  const {logout: logoutContext} = useAuth();
 
   const [applicant,setApplicant] = useState<Applicant>();
   const applicantId = sessionStorage.getItem('applicantId');
@@ -50,6 +53,7 @@ const MyProfilePage = () => {
     const confirmed = window.confirm("Are you sure you want to logout?");
     if (confirmed){
       sessionStorage.setItem('applicantId','');
+      logoutContext();
       navigate('/', { replace: true });
       window.location.reload();
     }

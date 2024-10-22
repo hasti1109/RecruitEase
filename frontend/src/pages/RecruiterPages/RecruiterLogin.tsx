@@ -3,6 +3,7 @@ import React, { useState, ChangeEvent, MouseEvent } from "react";
 import toast, {Toaster} from "react-hot-toast";
 import { IoEye, IoEyeOff, IoKey, IoPerson } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const RecruiterLogin = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -10,6 +11,7 @@ const RecruiterLogin = () => {
   const [password, setPassword] = useState<string>("");
   const [isValid, setIsValid] = useState<boolean>(true);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,6 +24,7 @@ const RecruiterLogin = () => {
       if(response.status === 200){
         const recruiterId = response.data;
         sessionStorage.setItem('recruiterId', recruiterId);
+        login({ role: 'recruiter' });
         navigate('/home');
       }
     } catch (error) {

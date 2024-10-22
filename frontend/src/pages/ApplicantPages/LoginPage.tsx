@@ -6,6 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
+
 
 type FormFields = {
   email: string;
@@ -14,7 +16,7 @@ type FormFields = {
 
 
 const Login = () => {
-
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   
@@ -40,6 +42,7 @@ const Login = () => {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         const applicantId = response.data.userId;
         sessionStorage.setItem('applicantId', applicantId);
+        login({ role: 'applicant' });
         navigate('/user/jobs', { state: applicantId });
       }
       else{
